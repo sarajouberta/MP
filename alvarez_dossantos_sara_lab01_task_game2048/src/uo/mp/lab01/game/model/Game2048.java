@@ -18,14 +18,14 @@ import java.util.Random;
  * Empresa: Escuela de Ingenier�a Inform�tica - Uiversidad de Oviedo
  * </p>
  * 
- * @author Profesores-MP
- * @version 2023
+ * @author Sara Álvarez Dos Santos
+ * @version 3/2/2023
  */
 public class Game2048 {
 	
-	private static final int BASE = 2;
-	private static final int DEFAULT_SIZE_BOARD = 3;
-	private static final Random RAND = new Random();
+	public static final int BASE = 2;
+	public static final int DEFAULT_SIZE_BOARD = 3;
+	public static final Random RAND = new Random();
 	private int[][] board;
 	
 	/**

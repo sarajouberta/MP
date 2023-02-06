@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uo.mp.lab01.game.model.Game2048;
+import uo.mp.lab01.game.model.util.ForTesting;
 
 public class NextTest {
 	
@@ -19,7 +20,7 @@ public class NextTest {
 	//1- existen posiciones vacías --> añade un 2 en una posición aleatoria vacía
 	@Test
 	public void nextTestWithEmptyPositions() {
-		int[][] case1Board = TestUtil.generateBoardCase1();
+		int[][] case1Board = ForTesting.generateBoardCase1();
 		Game2048 game2048 = new Game2048(case1Board);
 		game2048.next();
 		int[][] testBoard = game2048.getBoardForTesting();
@@ -38,7 +39,7 @@ public class NextTest {
 	//2- no existen posiciones vacías --> no modifica el tablero
 	@Test
 	public void nextTestWithoutEmptyPositions() {
-		int[][] case2Board = TestUtil.generateBoardCase2();
+		int[][] case2Board = ForTesting.generateBoardCase2();
 		Game2048 game2048 = new Game2048(case2Board);
 		game2048.next();
 		int[][] testBoard = game2048.getBoardForTesting();

@@ -1,7 +1,7 @@
 package uo.mp.lab01.game.model.util;
 
 public class ForTesting {
-	// constantes que se deberán usar en los test
+	// constantes que se deberï¿½n usar en los test
 	public static int[][] SEMIFULL12 = {{2,0,0},
             							{2,0,0},
             							{2,0,0}};
@@ -88,7 +88,7 @@ public class ForTesting {
 													 {2,2,2}};
 	
 	/**
-	 * Suma todos los valores de la matriz que recibe como parámetro
+	 * Suma todos los valores de la matriz que recibe como parï¿½metro
 	 * @param matrix
 	 * @return resultado de la suma
 	 */
@@ -99,5 +99,78 @@ public class ForTesting {
 				cont = cont + matrix[i][j];
 		return cont;
 	}
+	
+	
+	
+	/**
+	 * MÃ©todos que se aÃ±aden para generar otras matrices necesarias para hacer tests:
+	 */
+	public static int[][] EMPTY = {{0,0,0},
+			                       {0,0,0},
+			                       {0,0,0}};
+	
 
+	//Genera una matriz cuadrada con potencias de 2 solo en la diagonal.
+	
+	public static int[][] generateBoardCase1(){
+		int[][] case1Board = new int[4][4];
+		for(int i = 0; i < 4; i++) {
+			case1Board[i][i] = 4;
+		}
+		return case1Board;	
+	}
+	
+	//Genera una matriz cuadrada con potencias de 2, completamente rellena.
+	
+	public static int[][] generateBoardCase2(){
+		int[][] case2Board = new int[3][3];
+		case2Board[0][0] = 4;
+		case2Board[0][1] = 8;
+		case2Board[0][2] = 16;
+		case2Board[1][0] = 8;
+		case2Board[1][1] = 32;
+		case2Board[1][2] = 64;
+		case2Board[2][0] = 8;
+		case2Board[2][1] = 4;
+		case2Board[2][2] = 16;
+		return case2Board;
+	}	
+	
+	//Genera una matriz cuadrada incorrecta (contiene nÃºmeros distintos de potencias de 3.
+	
+	public static int[][] generateBoardCase3(){
+		int[][] case3Board = new int[3][3];
+		case3Board[0][0] = 4;
+		case3Board[0][1] = 15;
+		case3Board[0][2] = 16;
+		case3Board[1][0] = 8;
+		case3Board[1][1] = 30;
+		case3Board[1][2] = 61;
+		case3Board[2][0] = 8;
+		case3Board[2][1] = 4;
+		case3Board[2][2] = 16;
+		return case3Board;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

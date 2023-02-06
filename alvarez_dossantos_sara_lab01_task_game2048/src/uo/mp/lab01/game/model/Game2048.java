@@ -1,6 +1,8 @@
 package uo.mp.lab01.game.model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,10 +24,13 @@ import java.util.Random;
  * @version 3/2/2023
  */
 public class Game2048 {
-	
+
+	public static final int MIN_SIZE_BOARD = 2;
+	public static final int MAX_SIZE_BOARD = 5;
 	public static final int BASE = 2;
 	public static final int DEFAULT_SIZE_BOARD = 3;
 	public static final Random RAND = new Random();
+	
 	private int[][] board;
 	
 	/**
@@ -44,7 +49,7 @@ public class Game2048 {
 	 *y el m�ximo (5) se crea un tablero con el valor por defecto (3)
 	 */
 	public Game2048(int size) {
-		if(size < 2 || size > 5) {
+		if(size < MIN_SIZE_BOARD || size > MAX_SIZE_BOARD) {
 			board = new int[DEFAULT_SIZE_BOARD][DEFAULT_SIZE_BOARD];
 		}else {
 			board = new int[size][size];
@@ -143,8 +148,33 @@ public class Game2048 {
 	 * 
 	 */
 	public void next() {
-		
+		List<Position> positions = new ArrayList<Position>();  //se crea lista que almacena posiciones vacías
+		for (int i = 0; i < this.board.length; i++) {   //se recorre el tablero en busca de posiciones vacías
+			for (int j = 0; j < this.board[0].length; j++) {
+				if(this.board[i][j] == 0) {
+					positions.add(new Position(i,j));  //se almacena la posición vacía en la lista
+				}
+			}
+		}
+		if(positions.size() > 0) {   //si hay posiciones vacías (si no, el método no hace nada)
+			int random = RAND.nextInt(positions.size());   //se genera un nº aleatorio en el rango de las posiciones vacías
+			this.board[positions.get(random).x][positions.get(random).y] = 2;  //se accede a la posicion obtenida para poner un 2
+		}
 	}
+	
+	//Clase priada para almacenar posiciones vacías:
+	
+	private class Position{
+		int x;
+		int y;
+		
+		public Position(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	
 	
 	/**
 	 * Comprueba si el tablero est� lleno. Esto ocurre cuando todas las celdas
@@ -152,8 +182,14 @@ public class Game2048 {
 	 * @return true si est� el tablero lleno, false si hay alg�n hueco
 	 */
 	public boolean isBoardFull() {
-		return false; // quitar esta l�nea al completar
-		
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board[0].length; j++) {
+				if(this.board[i][j] == 0) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	/**

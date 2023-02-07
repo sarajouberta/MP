@@ -22,7 +22,7 @@ public class RestartTest {
 		int[][ ]board = ForTesting.SEMIFULL21;  //tablero 3x3 con 2 columnas rellenas (6 posiciones)
 		Game2048 game2048 = new Game2048(board);
 		game2048.restart();
-		int aux = howManyTwo(board); //se llama al método que cuenta el nº de "2" que contiene el tablero
+		int aux = howManyTwo(game2048.getBoardForTesting()); //se llama al método que cuenta el nº de "2" que contiene el tablero
 		assertEquals(aux, 1); //se comprueba que solo una posición contiene algo distinto de 0 (2)
 	}
 	
@@ -33,7 +33,7 @@ public class RestartTest {
 		int[][ ]board = ForTesting.EMPTY;  //tablero 3x3 con todas las posiciones a 0
 		Game2048 game2048 = new Game2048(board);
 		game2048.restart();
-		int aux = howManyTwo(board); //se llama al método que cuenta el nº de "2" que contiene el tablero
+		int aux = howManyTwo(game2048.getBoardForTesting()); //se llama al método que cuenta el nº de "2" que contiene el tablero
 		assertEquals(aux, 1); //se comprueba que solo una posición contiene algo distinto de 0 (2)
 	}
 	

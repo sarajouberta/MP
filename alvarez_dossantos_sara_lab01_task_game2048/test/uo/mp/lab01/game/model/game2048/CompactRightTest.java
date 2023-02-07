@@ -34,7 +34,7 @@ public class CompactRightTest {
 		//                							{2,0,0},
 		//                							{2,0,0}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL12);
-		game.compactLeft();
+		game.compactRight();
 		assertArrayEquals(ForTesting.SEMIFULL1_RIGHTCOMPACTED, game.getBoardForTesting());
 	}
 	
@@ -48,7 +48,7 @@ public class CompactRightTest {
 		//											{0,2,0},
 		//											{0,2,0}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL11);
-		game.compactLeft();
+		game.compactRight();
 		assertArrayEquals(ForTesting.SEMIFULL1_RIGHTCOMPACTED, game.getBoardForTesting());
 	}
 	
@@ -62,7 +62,7 @@ public class CompactRightTest {
 		//											{0,0,2},
 		//											{0,0,2}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL13);
-		game.compactLeft();
+		game.compactRight();
 		assertArrayEquals(ForTesting.SEMIFULL1_RIGHTCOMPACTED, game.getBoardForTesting());
 	}
 	
@@ -77,7 +77,7 @@ public class CompactRightTest {
 	//											{0,2,2},
 	//											{0,2,2}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL21);
-		game.compactLeft();
+		game.compactRight();
 		assertArrayEquals(ForTesting.SEMIFULL2_RIGHTCOMPACTED, game.getBoardForTesting());
 	}
 	
@@ -92,7 +92,7 @@ public class CompactRightTest {
 	//											{2,2,0},
 	//											{2,2,0}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL22);
-		game.compactLeft();
+		game.compactRight();
 		assertArrayEquals(ForTesting.SEMIFULL2_RIGHTCOMPACTED, game.getBoardForTesting());
 	}
 	
@@ -107,7 +107,7 @@ public class CompactRightTest {
 	//											{2,0,2},
 	//											{2,0,2}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL23);
-		game.compactLeft();
+		game.compactRight();
 		assertArrayEquals(ForTesting.SEMIFULL2_RIGHTCOMPACTED, game.getBoardForTesting());
 	}
 	
@@ -122,7 +122,7 @@ public class CompactRightTest {
 	//		  							  {2,2,2},
 	//		  							  {2,2,2}};
 		Game2048 game = new Game2048(ForTesting.FULL);
-		game.compactLeft();
+		game.compactRight();
 		assertArrayEquals(ForTesting.FULL, game.getBoardForTesting());
 	}
 	

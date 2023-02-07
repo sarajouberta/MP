@@ -79,7 +79,7 @@ public class CompactUpTest {
 //				                            {0,0,0}};											{0,2,2}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL43);
 		game.compactUp();
-		assertArrayEquals(ForTesting.SEMIFULL3_UPCOMPACTED, game.getBoardForTesting());
+		assertArrayEquals(ForTesting.SEMIFULL4_UPCOMPACTED, game.getBoardForTesting());
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class CompactUpTest {
 	//	                                        {2,2,2}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL41);
 		game.compactUp();
-		assertArrayEquals(ForTesting.SEMIFULL3_UPCOMPACTED, game.getBoardForTesting());
+		assertArrayEquals(ForTesting.SEMIFULL4_UPCOMPACTED, game.getBoardForTesting());
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class CompactUpTest {
 	//	                                        {2,2,2}};
 		Game2048 game = new Game2048(ForTesting.SEMIFULL42);
 		game.compactUp();
-		assertArrayEquals(ForTesting.SEMIFULL3_UPCOMPACTED, game.getBoardForTesting());
+		assertArrayEquals(ForTesting.SEMIFULL4_UPCOMPACTED, game.getBoardForTesting());
 	}
 	
 	/**
@@ -123,7 +123,7 @@ public class CompactUpTest {
 	//		  							  {2,2,2},
 	//		  							  {2,2,2}};
 		Game2048 game = new Game2048(ForTesting.FULL);
-		game.compactDown();
+		game.compactUp();
 		assertArrayEquals(ForTesting.FULL, game.getBoardForTesting());
 	}
 }

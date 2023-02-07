@@ -162,8 +162,9 @@ public class Game2048 {
 		}
 	}
 	
-	//Clase priada para almacenar posiciones vacías:
-	
+	/*Clase privada para almacenar posiciones vacías:
+	 * cada posición es un objeto con cada coordenada como artibuto.
+	 */
 	private class Position{
 		int x;
 		int y;
@@ -199,19 +200,37 @@ public class Game2048 {
 	 * y todos los ceros en las �ltimas posiciones de la fila
 	 */
 	public void compactLeft() {
-		
+		for(int i = 0; i < this.board.length; i++){   // se recorre cada fila del tablero
+			compactRowLeft(i);
+		}
 	}
 	
 	/*
-	 * Compacta una fila a la derecha
+	 * Compacta una fila a la izquierda
 	 * Recorre la fila y si la posici�n contiene 0 se busca una posici�n a la derecha
 	 * que no contenga 0 y se hace intercambio de valores.
 	 * Aseg�rate de que el algoritmo es eficiente. Si ya est� compactada no sigue comprobando
 	 * 
 	 */
 	private void compactRowLeft(int row) {
-		
+		int i = row;
+		for (int j = 0; j < board.length-1; j++) {  //no mira la última posición, ya que no puede intercambiarse
+			if(this.board[i][j] == 0) {
+				for(int k = j+1; k < board.length; k++) {
+					if(this.board[i][k] > 0) {   // si la posición contiene 0, la intercambia con la siguiente
+						int aux = this.board[i][k];  
+			            this.board[i][k] = this.board[i][j];  
+			            this.board[i][j] = aux;
+			            break;
+					}
+			
+				}
+			}
+			
+			
+		}
 	}
+	
 	
 	/*
 	 * Busca una posici�n (columna) a la derecha de la posici�n column que 
@@ -225,6 +244,7 @@ public class Game2048 {
 	private int findPositionAtRightWithValueFor(int row, int column) {
 		return 0;  // sustituir y completar
 	}
+	
 
 	/**
 	 * Compacta el tablero a la derecha, 
@@ -233,7 +253,32 @@ public class Game2048 {
 	 * y todos los ceros en las primeras posiciones de la fila
 	 */
 	public void compactRight() {
-		
+		for(int i = 0; i < this.board.length; i++){   // se recorre cada fila del tablero
+			compactRowRight(i);
+		}
+	}
+	
+	/*
+	 * Compacta una fila a la derecha
+	 * Recorre la fila y si la posici�n contiene 0 se busca una posici�n a la derecha
+	 * que no contenga 0 y se hace intercambio de valores.
+	 * Aseg�rate de que el algoritmo es eficiente. Si ya est� compactada no sigue comprobando
+	 * 
+	 */
+	private void compactRowRight(int row) {
+		int i = row;
+		for (int j = board.length-1; j > 0; j--) {  //no mira la última posición, ya que no puede intercambiarse
+			if(this.board[i][j] == 0) {   // si la posición contiene 0, la intercambia con la siguiente
+				for(int k = j-1; k >= 0; k--) {
+					if(this.board[i][k] > 0) {
+						int aux = this.board[i][k];  
+			            this.board[i][k] = this.board[i][j];  
+			            this.board[i][j] = aux;
+			            break;
+					}
+				}
+			}	
+		}
 	}
 	
 	
@@ -245,18 +290,69 @@ public class Game2048 {
 	 * y todos los ceros en las �ltimas posiciones
 	 */
 	public void compactUp() {
-		
+		for(int i = 0; i < this.board[0].length; i++){   // se recorre cada fila del tablero
+			compactColumnUp(i);
+		}
 	}
+	
+	/* Método privado que compacta cada columna hacia arriba
+	 * Recorre la columna y si la posici�n contiene 0 se busca una posici�n abajo
+	 * que no contenga 0 y se hace intercambio de valores.
+	 * Aseg�rate de que el algoritmo es eficiente. Si ya est� compactada no sigue comprobando
+	 * 
+	 */
+	
+	private void compactColumnUp(final int column) {
+		for (int j = 0; j < board.length-1; j++) {  //no mira la última posición, ya que no puede intercambiarse
+			if(this.board[j][column] == 0) {   // si la posición contiene 0, la intercambia con la siguiente
+				for(int k = this.board.length; k > 0 ; k--) {
+					if(this.board[k][column] > 0) {
+						int aux = this.board[k][column];  
+			            this.board[k][column] = this.board[j][column];  
+			            this.board[j][column] = aux; 
+			            break;
+					}
+				}
+			}	
+		}
+	}
+	
 	
 	/**
 	 * Compacta el tablero hacia abajo, 
 	 * dejando en cada columna todos los valores positivos consecutivos 
-	 * en las �ltimas posiciones de las columnas
+	 * en las últimas posiciones de las columnas
 	 * y todos los ceros en las primeras posiciones
 	 */
 	public void compactDown() {
-		
+		for(int i = 0; i < this.board[0].length; i++){   // se recorre cada fila del tablero
+			compactColumnDown(i);
+		}
 	}
+	
+	/* Método privado que compacta cada columna hacia abajo
+	 * Recorre la columna y si la posici�n contiene 0 se busca una posici�n arriba
+	 * que no contenga 0 y se hace intercambio de valores.
+	 * Aseg�rate de que el algoritmo es eficiente. Si ya est� compactada no sigue comprobando
+	 * 
+	 */
+	
+	private void compactColumnDown(final int column) {
+		for (int j = board.length-1; j > 0; j--) {  //no mira la última posición, ya que no puede intercambiarse
+			if(this.board[j][column] == 0) {   // si la posición contiene 0, la intercambia con la siguiente
+				for(int k = j-1; k >= 0 ; k--) {
+					if(this.board[k][column] > 0) {
+						int aux = this.board[k][column];  
+			            this.board[k][column] = this.board[j][column];  
+			            this.board[j][column] = aux; 
+			            break;
+					}
+				}
+			}	
+		}
+	}
+	
+	
 	
 	
 	/**
@@ -269,7 +365,16 @@ public class Game2048 {
 	 *    Se devuelve el String "2    2    0\n2    0    0\n2    0    2\n"
 	 */
 	public String toString() {
-		return null; // quitar esta l�nea al completar
+		StringBuilder str = new StringBuilder();
+		String space = "     ";
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				str.append(board[i][j]);
+				str.append(j == board.length-1 ? "" : space);
+			}
+			str.append("\n");
+		}
+		return str.toString();
 	}
 	
 	/**
@@ -277,12 +382,29 @@ public class Game2048 {
 	 *         el tablero; true en otro caso
 	 */
 	public boolean isFinished() {
-		
-		return true;// quitar esta l�nea al completar
+		int contador = 0;
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board.length; j++) {
+				if(this.board[i][j] == 2048) {
+					return true;
+				}
+				if(this.board[i][j] == 0) {
+					contador ++;
+				}
+			}
+		}
+		if(contador == 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	
-	//pruebas y cosas:
+	
+	
+	
+	/*pruebas y cosas:
 	
 	private void funwithSara(int startA, int startB) {
 		int initA = startA;
@@ -297,6 +419,6 @@ public class Game2048 {
 			}
 			
 		}
-	}
+	}*/
 
 }

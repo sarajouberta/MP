@@ -1,12 +1,12 @@
-package uo.mp.lab01.game.model.game2048;
+package uo.mp.lab02.game.model.game2048;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import uo.mp.lab01.game.model.Game2048;
-import uo.mp.lab01.game.model.util.ForTesting;
+import uo.mp.lab02.game.model.Game2048;
+import uo.mp.lab02.game.model.util.ForTesting;
 
 public class Game2048WithBoardParamTest {
 	

@@ -1,11 +1,11 @@
-package uo.mp.lab01.game.ui;
+package uo.mp.lab02.game.ui;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import uo.mp.lab.util.console.Console;
-import uo.mp.lab01.game.model.Game2048;
+import uo.mp.lab02.game.model.Game2048;
 
 /**
  * <p>

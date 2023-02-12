@@ -1,11 +1,11 @@
-package uo.mp.lab01.game.model.game2048;
+package uo.mp.lab02.game.model.game2048;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import uo.mp.lab01.game.model.Game2048;
-import uo.mp.lab01.game.model.util.ForTesting;
+import uo.mp.lab02.game.model.Game2048;
+import uo.mp.lab02.game.model.util.ForTesting;
 
 public class RestartTest {
 	
@@ -45,7 +45,7 @@ public class RestartTest {
 		for(int i = 0; i < board.length; i++) {  //se recorre la matriz para comprobar que contiene 0 en todas las posiciones salvo una
 			for (int j = 0; j < board[0].length; j++) {
 				if(board[i][j] != 0) {
-					contador ++;
+					contador ++;   //se acumula en la variable el número de '2' que se encuentren
 				}
 			}
 		}

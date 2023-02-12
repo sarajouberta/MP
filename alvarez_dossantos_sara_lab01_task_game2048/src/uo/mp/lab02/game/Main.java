@@ -1,6 +1,6 @@
-package uo.mp.lab01.game;
+package uo.mp.lab02.game;
 
-import uo.mp.lab01.game.ui.GameApp;
+import uo.mp.lab02.game.ui.GameApp;
 
 public class Main {
 

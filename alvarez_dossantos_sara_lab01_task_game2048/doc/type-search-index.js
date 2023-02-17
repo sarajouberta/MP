@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"uo.mp.lab02.game.model","l":"Game2048"}];updateSearchResults();

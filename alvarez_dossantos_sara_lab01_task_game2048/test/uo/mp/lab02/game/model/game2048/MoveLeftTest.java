@@ -18,7 +18,7 @@ public class MoveLeftTest {
 	//1- Tablero con huecos (0) y números consecutivos
 	@Test
 	public void moveLeftSemifullBoardConsecutiveNumbers() {
-		Game2048 game2048 = new Game2048(ForTesting.CONSECUTIVE_SEMIFULL_5_PAIR);
+		Game2048 game2048 = new Game2048(ForTesting.CONSECUTIVE_SEMIFULL_5);
 		game2048.moveLeft();
 		assertArrayEquals(ForTesting.CONSECUTIVE_SEMIFULL_5_LEFTSUM, game2048.getBoardForTesting());
 	

@@ -9,26 +9,26 @@ import uo.mp.lab02.game.model.Game2048;
 
 /**
  * <p>
- * Título: Clase principal
+ * Tï¿½tulo: Clase principal
  * </p>
  * <p>
- * Descripción: 2048 es un juego en línea creado por Gabriele Cirulli. El
- * objetivo del juego es combinar números juntos (potencias de 2) con el fin de
- * alcanzar el máximo número 2048 y ganar el juego. Para mover los números en el
- * tablero, se debe elegir una dirección (arriba, derecha, abajo o izquierda).
- * Todos los números se mueven en la dirección elegida y pueden ocurrir dos
- * cosas: los números se juntan en una celda que tiene el mismo número o son
- * bloqueados si una celda contiene un número diferente.
+ * Descripciï¿½n: 2048 es un juego en lï¿½nea creado por Gabriele Cirulli. El
+ * objetivo del juego es combinar nï¿½meros juntos (potencias de 2) con el fin de
+ * alcanzar el mï¿½ximo nï¿½mero 2048 y ganar el juego. Para mover los nï¿½meros en el
+ * tablero, se debe elegir una direcciï¿½n (arriba, derecha, abajo o izquierda).
+ * Todos los nï¿½meros se mueven en la direcciï¿½n elegida y pueden ocurrir dos
+ * cosas: los nï¿½meros se juntan en una celda que tiene el mismo nï¿½mero o son
+ * bloqueados si una celda contiene un nï¿½mero diferente.
  * 
  * <p>
  * Copyright: Copyright (c) 2022
  * </p>
  * <p>
- * Empresa: Escuela de Ingeniería Informática - Universidad de Oviedo
+ * Empresa: Escuela de Ingenierï¿½a Informï¿½tica - Universidad de Oviedo
  * </p>
  * 
- * @author Profesores-MP
- * @version 1.0
+ * @author Sara Ãlvarez Dos Santos
+ * @version 13/2/23
  */
 
 public class GameApp {
@@ -48,37 +48,37 @@ public class GameApp {
 		game.restart();
 		do {
 			System.out.println(game.toString());
-			System.out.print("Elige una dirección [r R]/[l L]/[u U]/[d D]: ");
+			System.out.print("Elige una direcciï¿½n [r R]/[l L]/[u U]/[d D]: ");
 			switch (Console.readCharacter()) {
 			case 'r':
 			case 'R':
-				game.compactRight();
+				game.moveRight();
 				game.next();
 				break;
 			case 'l':
 			case 'L':
-				game.compactLeft();
+				game.moveLeft();
 				game.next();
 				break;
 			case 'u':
 			case 'U':
-				game.compactUp();
+				game.moveUp();
 				game.next();
 				break;
 			case 'd':
 			case 'D':
-				game.compactDown();
+				game.moveDown();
 				game.next();
 				break;
 			}
 
-		} while (!game.isBoardFull());
+		} while (!game.isFinished());  //modificado task02
 
 		showGameOver();
 	}
 
 	/**
-	 * Muestra el título del juego
+	 * Muestra el tï¿½tulo del juego
 	 */
 	private void showTitle() {
 		System.out.print("2048 GAME\n");
@@ -96,7 +96,7 @@ public class GameApp {
 	 * @return true true quiere continuar y false en caso contrario
 	 */
 	private boolean userWantsAnotherPlay() {
-		System.out.print("¿Quieres continuar? s/n: ");
+		System.out.print("ï¿½Quieres continuar? s/n: ");
 		return  Console.readCharacter()== 's';
 	}
 

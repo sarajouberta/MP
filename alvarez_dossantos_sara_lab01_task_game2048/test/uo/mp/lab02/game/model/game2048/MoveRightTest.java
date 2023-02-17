@@ -1,7 +1,6 @@
 package uo.mp.lab02.game.model.game2048;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,7 @@ public class MoveRightTest {
 	//1- Tablero con huecos (0) y números consecutivos pares
 	@Test
 	public void moveRightSemifullBoardConsecutivePairPositions() {
-		Game2048 game2048 = new Game2048(ForTesting.CONSECUTIVE_SEMIFULL_5_PAIR);
+		Game2048 game2048 = new Game2048(ForTesting.CONSECUTIVE_SEMIFULL_5);
 		game2048.moveRight();
 		assertArrayEquals(ForTesting.CONSECUTIVE_SEMIFULL_5_RIGHTSUM, game2048.getBoardForTesting());
 	}
@@ -36,10 +35,8 @@ public class MoveRightTest {
 			game2048.moveRight();
 			assertArrayEquals(ForTesting.CONSECUTIVE_SEMIFULL_5_IMPAIR_SUM, game2048.getBoardForTesting());
 		}
-		
 	
-	
-	//2- Tablero sin huecos, pero con números consecutivos
+	//3- Tablero sin huecos, pero con números consecutivos
 	@Test
 	public void moveRightFullBoardConsecutivePositions() {
 		Game2048 game2048 = new Game2048(ForTesting.CONSECUTIVE_FULL);

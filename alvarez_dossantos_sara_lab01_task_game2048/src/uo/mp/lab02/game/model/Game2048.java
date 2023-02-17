@@ -1,7 +1,6 @@
 package uo.mp.lab02.game.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -21,7 +20,7 @@ import java.util.Random;
  * </p>
  * 
  * @author Sara Ã�lvarez Dos Santos
- * @version 7/2/2023
+ * @version 13/2/2023
  */
 public class Game2048 {
 
@@ -45,7 +44,7 @@ public class Game2048 {
 	/**
 	 *Constructor que recibe el tamaï¿½o del tablero
 	 *
-	 *@param tamaï¿½o del tablero cuadrado. Si el tamaï¿½o no estï¿½ entre el mï¿½nimo (2) 
+	 *@param size Utamaï¿½o del tablero cuadrado. Si el tamaï¿½o no estï¿½ entre el mï¿½nimo (2) 
 	 *y el mï¿½ximo (5) se crea un tablero con el valor por defecto (3)
 	 */
 	public Game2048(int size) {
@@ -70,7 +69,7 @@ public class Game2048 {
 	 * en el tablero interno para evitar que desde fuera se pueda 
 	 * modificar los valores del tablero a posteriori
 	 * 
-	 * @param matriz cuadrada, de dimensiones entre mï¿½ximo (5x5) y el mï¿½nimo (3x3)
+	 * @param board Matriz cuadrada, de dimensiones entre mï¿½ximo (5x5) y el mï¿½nimo (3x3)
 	 * conteniendo solo valores potencia de 2. 
 	 * 
 	 * @throws IllegalArgumentException si parï¿½metro null, la dimensiï¿½n es errï¿½nea, o 
@@ -83,7 +82,7 @@ public class Game2048 {
 		}else if(board.length != board[0].length) {    //si el tablero no es cuadrado
 			throw new IllegalArgumentException("El tablero debe ser cuadrado");
 		}else if(board.length < 2 || board.length > 5) {   //si el tamaÃ±o sale de lÃ­mites
-			throw new IllegalArgumentException("TamaÃ±o del tablero fuera de lÃ­mtes");
+			throw new IllegalArgumentException("Tamaño del tablero fuera de límtes");
 		}else{     //comprobar si solo contiene potencias de 2
 			for(int i = 0; i < board.length; i++) {
 				for (int j = 0; j < board[0].length; j++) {
@@ -102,14 +101,15 @@ public class Game2048 {
 		}
 	}
 	
-	// NO HABÃ�A VISTO ESTO
-	/*
-	 * @param n entero >= 0
-	 * @return true si n is potencia de 2; false en otro caso
+	
+	/**
 	 * 
+	 * @param n
+	 * @return
 	 */
+	@SuppressWarnings("unused") //No lo uso porque lo hice yo antes de ver este método.
 	private boolean powerOfTwoBitwise(int n) {
-		return (n & (n - 1)) == 0;  // No hay que hacer nada en este mï¿½todo
+		return (n & (n - 1)) == 0; 
 	}
 
 	/**
@@ -121,15 +121,22 @@ public class Game2048 {
 		if(this.board == null) {     //si no se habÃ­a instanciado aÃºn el tablero (evitar NullPointerException)
 			throw new IllegalStateException("No hay un tablero instanciado");
 		}
+		int[][] copiedBoard = this.copyBoard();	
+		return copiedBoard;
+	}
+	
+	/**
+	 * Método privado para realizar copia de la matriz tablero
+	 * (para refactorizar getBoardForTesting)
+	 */
+	private int[][] copyBoard(){
 		int[][] board = new int[this.board.length][this.board.length];   //se crea un tablero auxiliar con las dimensiones del que se copia
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				board[i][j] = this.board[i][j];  //se copian los valores del tablero de la partida para devolver su copia 
 			}
 		}
-		return board;	
-		
-		// refactorizar llamando a private int[][] copyBoard();
+		return board;
 	}
 	
 	
@@ -170,8 +177,10 @@ public class Game2048 {
 		}
 	}
 	
-	/*Clase privada para almacenar posiciones vacÃ­as:
-	 * cada posiciÃ³n es un objeto con cada coordenada como artibuto.
+	/**
+	 * 
+	 * @author user
+	 *
 	 */
 	private class Position{
 		int x;
@@ -190,7 +199,7 @@ public class Game2048 {
 	 * o posiciones del tablero tienen un nï¿½mero distinto de cero
 	 * @return true si estï¿½ el tablero lleno, false si hay algï¿½n hueco
 	 */
-	public boolean isBoardFull() {
+	private boolean isBoardFull() {
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[0].length; j++) {
 				if(this.board[i][j] == 0) {   //se recorre la matriz entera, y si encuentra alguna posiciÃ³n a 0, devuelve false
@@ -201,49 +210,9 @@ public class Game2048 {
 		return true;
 	}
 	
+	
+	
 	/**
-	 * Compacta el tablero a la izquierda, 
-	 * dejando en cada fila todos los valores positivos consecutivos 
-	 * en las primeras posiciones de la fila 
-	 * y todos los ceros en las ï¿½ltimas posiciones de la fila
-	 */
-	public void compactLeft() {
-		for(int i = 0; i < this.board.length; i++){   // se recorre cada fila del tablero
-			compactRowLeft(i);   //se llama al mÃ©todo que compacta la fila
-		}
-	}
-	
-	/*
-	 * Compacta una fila a la izquierda
-	 * Recorre la fila y si la posiciï¿½n contiene 0 se busca una posiciï¿½n a la derecha
-	 * que no contenga 0 y se hace intercambio de valores.
-	 * Asegï¿½rate de que el algoritmo es eficiente. Si ya estï¿½ compactada no sigue comprobando
-	 * 
-	 */
-	private void compactRowLeft(int row) {
-		int i = row;   //la fila es un valor fijo
-		for (int j = 0; j < board.length-1; j++) {  //no mira la Ãºltima posiciÃ³n, ya que no puede intercambiarse
-			if(this.board[i][j] == 0) {
-				//si la posiciÃ³n contiene un 0, se comprueba el resto de la fila:
-				for(int k = j+1; k < board.length; k++) { 
-					if(this.board[i][k] > 0) {
-						// si la siguiente posiciÃ³n del resto de la fila contiene algo mayor que 0, intercambia la primera (0) con esta 
-						int aux = this.board[i][k];  
-			            this.board[i][k] = this.board[i][j];  
-			            this.board[i][j] = aux;
-			            break;    /*tras el intercambio, se rompe el bucle para que continÃºe comprobando
-			                        en la siguiente iteraciÃ³n*/
-					}
-			
-				}
-			}
-			
-			
-		}
-	}
-	
-	
-	/*
 	 * Busca una posiciï¿½n (columna) a la derecha de la posiciï¿½n column que 
 	 * que contenga un valor positivo y devuelve la posiciï¿½n si lo encuentra
 	 * 
@@ -252,6 +221,7 @@ public class Game2048 {
 	 * @return columna encontrada con valor positivo 
 	 *         o -1 si no encuentra ninguna a su derecha
 	 */
+	@SuppressWarnings("unused")
 	private int findPositionAtRightWithValueFor(int row, int column) {
 		return 0;  // sustituir y completar
 	}
@@ -263,18 +233,18 @@ public class Game2048 {
 	 * en las ï¿½ltimas posiciones de la fila 
 	 * y todos los ceros en las primeras posiciones de la fila
 	 */
-	public void compactRight() {
+	private void compactRight() {
 		for(int i = 0; i < this.board.length; i++){   // se recorre cada fila del tablero
 			compactRowRight(i);
 		}
 	}
 	
-	/*
+	/**
 	 * Compacta una fila a la derecha
 	 * Recorre la fila y si la posiciï¿½n contiene 0 se busca una posiciï¿½n a la derecha
 	 * que no contenga 0 y se hace intercambio de valores.
 	 * Asegï¿½rate de que el algoritmo es eficiente. Si ya estï¿½ compactada no sigue comprobando
-	 * 
+	 * @param fila
 	 */
 	private void compactRowRight(int row) {
 		int i = row;   //la fila es un valor fijo
@@ -293,83 +263,6 @@ public class Game2048 {
 			}	
 		}
 	}
-	
-	
-	
-	/**
-	 * Compacta el tablero hacia arriba, 
-	 * dejando en cada columna todos los valores positivos consecutivos 
-	 * en las primeras posiciones de las columnas 
-	 * y todos los ceros en las ï¿½ltimas posiciones
-	 */
-	public void compactUp() {
-		for(int i = 0; i < this.board[0].length; i++){   // se recorre cada fila del tablero
-			compactColumnUp(i);
-		}
-	}
-	
-	/* MÃ©todo privado que compacta cada columna hacia arriba
-	 * Recorre la columna y si la posiciï¿½n contiene 0 se busca una posiciï¿½n abajo
-	 * que no contenga 0 y se hace intercambio de valores.
-	 * Asegï¿½rate de que el algoritmo es eficiente. Si ya estï¿½ compactada no sigue comprobando
-	 * 
-	 */
-	
-	private void compactColumnUp(final int column) {
-		for (int j = 0; j < board.length-1; j++) {  //no mira la Ãºltima posiciÃ³n, ya que no puede intercambiarse
-			if(this.board[j][column] == 0) {   
-				//si la posiciÃ³n contiene un 0, se comprueba el resto de la columna:
-				for(int k = this.board.length; k > 0 ; k--) {
-					if(this.board[k][column] > 0) {
-						// si la siguiente posiciÃ³n del resto de la columna contiene algo mayor que 0, intercambia la primera (0) con esta
-						int aux = this.board[k][column];  
-			            this.board[k][column] = this.board[j][column];  
-			            this.board[j][column] = aux; 
-			            break;
-					}
-				}
-			}	
-		}
-	}
-	
-	
-	/**
-	 * Compacta el tablero hacia abajo, 
-	 * dejando en cada columna todos los valores positivos consecutivos 
-	 * en las Ãºltimas posiciones de las columnas
-	 * y todos los ceros en las primeras posiciones
-	 */
-	public void compactDown() {
-		for(int i = 0; i < this.board[0].length; i++){   // se recorre cada fila del tablero
-			compactColumnDown(i);
-		}
-	}
-	
-	/* MÃ©todo privado que compacta cada columna hacia abajo
-	 * Recorre la columna y si la posiciï¿½n contiene 0 se busca una posiciï¿½n arriba
-	 * que no contenga 0 y se hace intercambio de valores.
-	 * Asegï¿½rate de que el algoritmo es eficiente. Si ya estï¿½ compactada no sigue comprobando
-	 * 
-	 */
-	
-	private void compactColumnDown(final int column) {
-		for (int j = board.length-1; j > 0; j--) {  //no mira la Ãºltima posiciÃ³n, ya que no puede intercambiarse
-			if(this.board[j][column] == 0) {   
-				//si la posiciÃ³n contiene un 0, se comprueba el resto de la columna:
-				for(int k = j-1; k >= 0 ; k--) {
-					if(this.board[k][column] > 0) {
-						// si la siguiente posiciÃ³n del resto de la columna contiene algo mayor que 0, intercambia la primera (0) con esta
-						int aux = this.board[k][column];  
-			            this.board[k][column] = this.board[j][column];  
-			            this.board[j][column] = aux; 
-			            break;
-					}
-				}
-			}	
-		}
-	}
-	
-	
 	
 	
 	/**
@@ -403,20 +296,22 @@ public class Game2048 {
 	/**
 	 * @return false si el jugador no ha ganado todavï¿½a y hay algunos huecos en
 	 *         el tablero; true en otro caso
+	 *         
+	 *¿Usar isBoardFull()?        
 	 */
 	public boolean isFinished() {
-		int contador = 0;  //variable para acumular el nÃºmero de espacios (0) en en tablero
+		//int contador = 0;  //variable para acumular el nÃºmero de espacios (0) en en tablero
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board.length; j++) {
 				if(this.board[i][j] == 2048) {   
 					return true;  //si se obtiene el nÃºmero 2048 en alguna posiciÃ³n, el juego termina (jugador gana)
 				}
-				if(this.board[i][j] == 0) {
-					contador ++;
-				}
+				//if(this.board[i][j] == 0) {
+				//	contador ++;
+				//}
 			}
 		}
-		if(contador == 0) {   //si no quedan espacios en el tablero, se acaba la partida (jugador pierde)
+		if(isBoardFull()) {   //si no quedan espacios en el tablero, se acaba la partida (jugador pierde)
 			return true;
 		}else {
 			return false;
@@ -431,8 +326,8 @@ public class Game2048 {
 	 * en la casilla derecha. Finalmente, se vuelve a compactar.
 	 * 
 	 * GIVEN: ???
-	 * THEN:
-	 * WHEN:
+	 * THEN:  ???
+	 * WHEN:  ???
 	 * 
 	 * Ejemplo:
 	 * Dada una fila 2 2 0 2 2 el resultado de moveRight() sería: 0 0 0 4 4
@@ -441,7 +336,6 @@ public class Game2048 {
 	 *  	3- compacta a la derecha -> 0 0 0 4 4
 	 * 
 	 */
-	
 	 public void moveRight() {
 		 this.compactRight();  //se compacta el tablero a la derecha
 		 for (int row = 0; row < board.length; row++) {
@@ -451,7 +345,10 @@ public class Game2048 {
 		 
 	 }
 	 
-	 
+	 /**
+	  * 
+	  * @param row
+	  */
 	 private void sumConsecutiveRight(int row) {
 		 int i = row;  //la fila es un valor fijo
 		 for (int j = board.length-1; j > 0; j--) {
@@ -465,16 +362,15 @@ public class Game2048 {
 	 }
 	 
 	 /**
-		 * Compacta a la izda. los números de cada fila, a continuación
-		 * suma de dos en dos los números consecutivos iguales dejando el resultado 
-		 * en la casilla derecha. Finalmente, se vuelve a compactar.
-		 * 
-		 * Se rota dos veces el tablero para reutilizar el movimiento a la derecha, llamando
-		 * al método privado rotateBoard(). Después, se llama a moveRight() para hacer las sumas pertinentes,
-		 * y se vuelve a rotar dos veces el tablero para devolverlo a la posición deseada.
-		 * 
-		 */
-	 
+	 * Compacta a la izda. los números de cada fila, a continuación
+	 * suma de dos en dos los números consecutivos iguales dejando el resultado 
+	 * en la casilla derecha. Finalmente, se vuelve a compactar.
+	 * 
+	 * Se rota dos veces el tablero para reutilizar el movimiento a la derecha, llamando
+	 * al método privado rotateBoard(). Después, se llama a moveRight() para hacer las sumas pertinentes,
+	 * y se vuelve a rotar dos veces el tablero para devolverlo a la posición deseada.
+	 * 
+	 */
 	 public void moveLeft() {
 		 rotateBoard();
 		 rotateBoard();
@@ -492,7 +388,6 @@ public class Game2048 {
 	  * 7 8 9     1 4 7
 	  * 
 	  */
-	 
 	 private void rotateBoard() {
 		 int[][] boardToCopy = new int[this.board.length][this.board.length];
 		 for (int i = 0; i < board.length; i++) {
@@ -505,16 +400,15 @@ public class Game2048 {
 	 
 	 
 	 /**
-		 * Compacta hacia arriba los números de cada fila, a continuación
-		 * suma de dos en dos los números consecutivos iguales dejando el resultado 
-		 * en la casilla derecha. Finalmente, se vuelve a compactar.
-		 * 
-		 * Se rota tres veces el tablero para reutilizar el movimiento a la derecha, llamando
-		 * al método privado rotateBoard(). Después, se llama a moveRight() para hacer las sumas pertinentes,
-		 * y se vuelve a rotar una vez el tablero para devolverlo a la posición deseada.
-		 * 
-		 */
-	 
+	 * Compacta hacia arriba los números de cada fila, a continuación
+	 * suma de dos en dos los números consecutivos iguales dejando el resultado 
+	 * en la casilla derecha. Finalmente, se vuelve a compactar.
+	 * 
+	 * Se rota tres veces el tablero para reutilizar el movimiento a la derecha, llamando
+	 * al método privado rotateBoard(). Después, se llama a moveRight() para hacer las sumas pertinentes,
+	 * y se vuelve a rotar una vez el tablero para devolverlo a la posición deseada.
+	 * 
+	 */
 	 public void moveUp() {
 		 rotateBoard();
 		 rotateBoard();
@@ -524,16 +418,15 @@ public class Game2048 {
 	 }
 	 
 	 /**
-		 * Compacta hacia abajo los números de cada fila, a continuación
-		 * suma de dos en dos los números consecutivos iguales dejando el resultado 
-		 * en la casilla derecha. Finalmente, se vuelve a compactar.
-		 * 
-		 * Se rota una vez el tablero para reutilizar el movimiento a la derecha, llamando
-		 * al método privado rotateBoard(). Después, se llama a moveRight() para hacer las sumas pertinentes,
-		 * y se vuelve a rotar tres veces el tablero para devolverlo a la posición deseada.
-		 * 
-		 */
-	 
+	 * Compacta hacia abajo los números de cada fila, a continuación
+	 * suma de dos en dos los números consecutivos iguales dejando el resultado 
+	 * en la casilla derecha. Finalmente, se vuelve a compactar.
+	 * 
+	 * Se rota una vez el tablero para reutilizar el movimiento a la derecha, llamando
+	 * al método privado rotateBoard(). Después, se llama a moveRight() para hacer las sumas pertinentes,
+	 * y se vuelve a rotar tres veces el tablero para devolverlo a la posición deseada.
+	 * 
+	 */
 	 public void moveDown() {
 		 rotateBoard();
 		 moveRight();

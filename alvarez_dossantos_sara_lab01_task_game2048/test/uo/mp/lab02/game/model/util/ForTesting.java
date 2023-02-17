@@ -45,9 +45,12 @@ public class ForTesting {
 	
 	
 	
+	
+	
 	/**
 	 * Métodos y variables estáticas que se añaden para generar otras matrices necesarias para hacer tests:
 	 */
+	
 	public static int[][] EMPTY = {{0,0,0},
 			                       {0,0,0},
 			                       {0,0,0}};
@@ -67,7 +70,7 @@ public class ForTesting {
            {0,0,0}};
 	
 	
-	public static int[][] CONSECUTIVE_SEMIFULL_5_PAIR = {{2,2,0,2,2},
+	public static int[][] CONSECUTIVE_SEMIFULL_5 = {{2,2,0,2,2},
 			                                             {2,2,0,2,2},
                                                          {2,2,0,2,2},
 			                                             {2,2,0,2,2},
@@ -110,6 +113,48 @@ public class ForTesting {
                                                             {2,2,0,2,2},
                                                             {4,4,0,4,4},
                                                             {4,4,0,4,4}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR = {{0,2,2,2},
+														  {0,2,2,2},
+														  {0,2,2,2},
+														  {0,2,2,2}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR_RIGHTSUM = {{0,0,2,4},
+			                                                        {0,0,2,4},
+			                                                        {0,0,2,4},
+			                                                        {0,0,2,4}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR_UP = {{2,2,2,2},
+			{2,2,2,2},
+			{2,2,2,2},
+            {0,0,0,0}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR_UPSUM = {{4,4,4,4},
+			{2,2,2,2},
+			{0,0,0,0},
+            {0,0,0,0}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR_DOWN = {{0,0,0,0},
+			{2,2,2,2},
+			{2,2,2,2},
+			{2,2,2,2}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR_DOWNSUM = {{0,0,0,0},
+			{0,0,0,0},
+			{2,2,2,2},
+			{4,4,4,4}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR_LEFT = {{2,2,2,0},
+			  {2,2,2,0},
+			  {2,2,2,0},
+			  {2,2,2,0}};
+	
+	public static int[][] CONSECUTIVE_SEMIFULL_4_IMPAIR_LEFTSUM = {{4,2,0,0},
+			  {4,2,0,0},
+			  {4,2,0,0},
+			  {4,2,0,0}};
+	
+
 	
 	
 

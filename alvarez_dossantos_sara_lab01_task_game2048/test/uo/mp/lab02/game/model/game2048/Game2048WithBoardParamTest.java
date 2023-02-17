@@ -25,6 +25,7 @@ public class Game2048WithBoardParamTest {
 	@Test
 	public void game2048WithBoardParamNull(){
 		try {
+			@SuppressWarnings("unused")
 			Game2048 game2048 = new Game2048(null);  //se intenta crear una partida con un tablero null
 			fail("Debería saltar una excepción");
 		}catch(IllegalArgumentException e){
@@ -37,6 +38,7 @@ public class Game2048WithBoardParamTest {
 	public void game2048WithBoardParamNotSquare(){
 		int[][] board = new int[2][4];  //se crea un tablero incorrecto para crear una partida
 		try {
+			@SuppressWarnings("unused")
 			Game2048 game2048 = new Game2048(board);  //se intenta crear una partida con un tablero no cuadrado
 			fail("Debería saltar una excepción");
 		}catch(IllegalArgumentException e){
@@ -49,6 +51,7 @@ public class Game2048WithBoardParamTest {
 	public void game2048WithBoardParamBelowMin(){
 		int[][] board = new int[1][1];  //se crea un tablero incorrecto para crear una partida
 		try {
+			@SuppressWarnings("unused")
 			Game2048 game2048 = new Game2048(board);  //se intenta crear una partida con un tablero no cuadrado
 			fail("Debería saltar una excepción");
 		}catch(IllegalArgumentException e){
@@ -62,6 +65,7 @@ public class Game2048WithBoardParamTest {
 	public void game2048WithBoardParamBeyondMax(){
 		int[][] board = new int[6][6];  //se crea un tablero fuera del límite máximo para la partida
 		try {
+			@SuppressWarnings("unused")
 			Game2048 game2048 = new Game2048(board);  //se intenta crear una partida con el tablero incorrecto
 			fail("Debería saltar una excepción");
 		}catch(IllegalArgumentException e){
@@ -74,6 +78,7 @@ public class Game2048WithBoardParamTest {
 	public void game2048WithBoardWrongContent() {
 		int[][]board = ForTesting.generateBoardCase3();
 		try {
+			@SuppressWarnings("unused")
 			Game2048 game2048 = new Game2048(board);  //se intenta crear una partida con el tablero incorrecto
 			fail("Debería saltar una excepción");
 		}catch(IllegalArgumentException e){

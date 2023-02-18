@@ -86,4 +86,6 @@ public abstract class Item {
     }
 
     public abstract void print();
+
+    public abstract String getResponsable();
 }

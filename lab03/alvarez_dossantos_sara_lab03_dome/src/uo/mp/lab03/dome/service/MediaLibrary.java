@@ -51,7 +51,45 @@ public class MediaLibrary {
      */
     public List<Item> getItemsForTesting() {
 	return new ArrayList<Item>(items);
+    }
 
+    /**
+     * 
+     * @param theItem el elemento que se quiere buscar
+     * @return el elemento buscado, null si no o encuentra
+     */
+    public Item searchItem(Item theItem) {
+	ArgumentChecks.isTrue(theItem != null, "Invalid item"); // se valida el parámetro
+	for (int i = 0; i < items.size(); i++) {
+	    Item it = items.get(i);
+	    if (items.get(i) == theItem) {
+		return it; // devuelve el elemento buscado de la lista
+	    }
+	}
+	return null;
+    }
+
+    // revisar
+
+    /**
+     * 
+     * @return cadena con los nombres de los responsables (vacía si no hay)
+     */
+    public String getResponsables() {
+	StringBuilder stringBuilder = new StringBuilder();
+	/*
+	 * for (Item item : items) {
+	 * stringBuilder.append(item.getResponsable() + ", "); //arreglar la ',' al final del último
+	 */
+	if(items.size() > 0) {   // si hay elementos en la lista
+	    for (int i = 0; i < items.size() - 1; i++) {
+		    stringBuilder.append(items.get(i).getResponsable() + ", ");
+		}
+		stringBuilder.append(items.get(items.size()-1).getResponsable());
+		return stringBuilder.toString();
+	}else {
+	    return stringBuilder.toString();
+	}
     }
 
 }

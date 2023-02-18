@@ -64,4 +64,12 @@ public class Dvd extends Item {
 
     }
 
+    /**
+     * @return cadena con los nombres de los responsables del dvd (directores)
+     */
+    @Override
+    public String getResponsable() {
+	return this.getDirector();
+    }
+
 }

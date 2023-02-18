@@ -82,4 +82,13 @@ public class Cd extends Item {
 	// TODO Auto-generated method stub
 
     }
+
+    /**
+     * @return cadena con los nombres de los responsables del cd (artistas)
+     */
+    @Override
+    public String getResponsable() {
+	return this.getArtist();
+    }
+
 }

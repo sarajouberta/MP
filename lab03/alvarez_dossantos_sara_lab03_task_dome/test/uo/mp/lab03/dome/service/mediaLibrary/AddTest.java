@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import uo.mp.lab03.dome.model.Cd;
 import uo.mp.lab03.dome.model.Dvd;
+import uo.mp.lab03.dome.model.Videogame;
+import uo.mp.lab03.dome.model.VideogamePlatform;
 import uo.mp.lab03.dome.service.MediaLibrary;
 
 public class AddTest {
@@ -17,8 +19,9 @@ public class AddTest {
     /**
      * Casos de uso:
      * 1- Se intenta añadir un elemento null --> salta una excepción
-     * 2- Se añade un elemento válido (cd) --> se añade correctamente
-     * 3- Se añade un elemento válido (dvd) --> se añade correctamente
+     * 2- Se añade un elemento válido (Cd) --> se añade correctamente
+     * 3- Se añade un elemento válido (Dvd) --> se añade correctamente
+     * 4- Se añde un elemento válido (Videogame) --> se añade correctamente
      */
 
     /**
@@ -67,6 +70,20 @@ public class AddTest {
     @Test
     public void addTestItemDvd() {
 	ml.add(new Dvd("Breakfast at Tiffany's", "Blake Edwards", 114)); // se añade un elemento a la colección vacía
+	assertEquals(1, ml.getNumberOfItemsOwned()); // se comprueba que se añadió el elemento Dvd a la colección
+
+    }
+
+    /**
+     * 4.
+     * GIVEN item (Videogame)
+     * WHEN add()
+     * THEN se añade correctamente
+     */
+    @Test
+    public void addTestItemVideogame() {
+	ml.add(new Videogame("Call of duty: black ops", "Activision", "Sara Alvarez", 3,
+		VideogamePlatform.PLAYSTATION)); // se añade un elemento a la colección vacía
 	assertEquals(1, ml.getNumberOfItemsOwned()); // se comprueba que se añadió el elemento Dvd a la colección
 
     }

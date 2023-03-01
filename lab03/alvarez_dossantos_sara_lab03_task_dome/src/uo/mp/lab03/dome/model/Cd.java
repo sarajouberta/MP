@@ -77,18 +77,18 @@ public class Cd extends Item {
 	out.println("Comment: " + getComment());
     }
 
-    @Override
-    public void print() {
-	// TODO Auto-generated method stub
-
-    }
-
     /**
      * @return cadena con los nombres de los responsables del cd (artistas)
      */
     @Override
     public String getResponsable() {
 	return this.getArtist();
+    }
+
+    @Override
+    public void print() {
+	print(System.out);
+
     }
 
 }

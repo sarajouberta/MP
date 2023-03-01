@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import uo.mp.lab03.dome.model.Cd;
 import uo.mp.lab03.dome.model.Dvd;
+import uo.mp.lab03.dome.model.Videogame;
+import uo.mp.lab03.dome.model.VideogamePlatform;
 import uo.mp.lab03.dome.service.MediaLibrary;
 
 public class GetItemsForTestingTest {
@@ -39,7 +41,9 @@ public class GetItemsForTestingTest {
     public void getItemsForTestingSemifullArrayList() {
 	ml.add(new Dvd("Mark Steven Johnson", "Ghost Rider", 110));
 	ml.add(new Cd("Nonante-cinq", "Angèle", 18, 62));
-	assertEquals(2, ml.getItemsForTesting()
+	ml.add(new Videogame("Animal Crossing: new Horizons", "Nintendo", "María Suárez", 1,
+		VideogamePlatform.NINTENDO));
+	assertEquals(3, ml.getItemsForTesting()
 	    .size()); // se comprueba que la lista copia contiene dos elementos
     }
     // preguntar ADRI

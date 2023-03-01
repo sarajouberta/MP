@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"uo.mp.lab03.post.model"},{"l":"uo.mp.lab03.post.service.socialnetwork"},{"l":"uo.mp.lab03.post.ui"}];updateSearchResults();

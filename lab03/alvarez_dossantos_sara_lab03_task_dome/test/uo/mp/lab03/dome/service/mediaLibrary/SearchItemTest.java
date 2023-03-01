@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import uo.mp.lab03.dome.model.Cd;
 import uo.mp.lab03.dome.model.Dvd;
+import uo.mp.lab03.dome.model.Videogame;
+import uo.mp.lab03.dome.model.VideogamePlatform;
 import uo.mp.lab03.dome.service.MediaLibrary;
 
 public class SearchItemTest {
@@ -28,7 +30,8 @@ public class SearchItemTest {
      * 1-Parámetro null --> salta una excepción
      * 2-El elemento (Cd) está en la lista --> devuelve el elemento encontrado en la lista
      * 3-El elemento (Dvd) está en la lista --> devuelve el elemento encontrado en la lista
-     * 4- El elemento no está en la lista --> devuelve null
+     * 4-El elemento no está en la lista --> devuelve null
+     * 5-El elemento (Dvd) está en la lista --> devuelve el elemento encontrado en la lista
      * 
      */
 
@@ -84,6 +87,20 @@ public class SearchItemTest {
     public void searchItemNotFound() {
 	Dvd dvd1 = new Dvd("Titanic", "James Cameron", 195);
 	assertEquals(null, ml.searchItem(dvd1)); // se trata de buscar un elemento que no está en la lista
+    }
+
+    /**
+     * 4.
+     * GIVEN el item (Videogame) está en la colección
+     * WHEN searchItem()
+     * THEN devuelve el videojuego buscado de la lista
+     */
+    @Test
+    public void searchItemVideogameFound() {
+	Videogame videogame1 = new Videogame("Grand Theft Auto: San Andreas", "Rockstar", "Sara Álvarez", 32,
+		VideogamePlatform.PLAYSTATION);
+	ml.add(videogame1);
+	assertEquals(videogame1, ml.searchItem(videogame1));
     }
 
 }

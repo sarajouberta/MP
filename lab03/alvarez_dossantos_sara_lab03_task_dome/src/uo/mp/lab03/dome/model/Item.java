@@ -29,7 +29,7 @@ public abstract class Item {
 
     /**
      * 
-     * @param boolean true means we own a copy; otherwise, false
+     * @param ownIt boolean true means we own a copy; otherwise, false
      */
     public void setOwn(boolean ownIt) {
 	gotIt = ownIt;
@@ -48,8 +48,8 @@ public abstract class Item {
     /**
      * 
      * @param arg String with a new comment to the element
-     * @implNote If the argument is null or does not contain meaningful characters (other than blanks, new lines, etc)
-     *           previous comment stays as it is
+     *            If the argument is null or does not contain meaningful characters (other than blanks, new lines, etc)
+     *            previous comment stays as it is
      */
     public void setComment(String arg) {
 	if (arg != null && !arg.isBlank()) {

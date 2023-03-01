@@ -31,7 +31,7 @@ public class Dvd extends Item {
 
     /**
      * 
-     * @param boolean true means we own a copy; otherwise, false
+     * @param ownIt boolean true means we own a copy; otherwise, false
      */
     public void setOwn(boolean ownIt) {
 	gotIt = ownIt;
@@ -58,18 +58,18 @@ public class Dvd extends Item {
 	out.println("Comment: " + getComment());
     }
 
-    @Override
-    public void print() {
-	// TODO Auto-generated method stub
-
-    }
-
     /**
      * @return cadena con los nombres de los responsables del dvd (directores)
      */
     @Override
     public String getResponsable() {
 	return this.getDirector();
+    }
+
+    @Override
+    public void print() {
+	print(System.out);
+
     }
 
 }

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import uo.mp.lab03.dome.model.Cd;
 import uo.mp.lab03.dome.model.Dvd;
+import uo.mp.lab03.dome.model.Videogame;
+import uo.mp.lab03.dome.model.VideogamePlatform;
 import uo.mp.lab03.dome.service.MediaLibrary;
 
 public class GetResponsablesTest {
@@ -29,6 +31,9 @@ public class GetResponsablesTest {
      * 2- Hay responsables (hay items Dvd en la lista)--> se devuelve una cadena con los nombres de los responsables de
      * mediaLibrary
      * 3- No hay responsables (lista de items vacía)--> se devuelve una cadena vacía
+     * 4- Hay responsables (hay items Videogame en la lista)--> se devuelve una cadena con los nombres de los
+     * responsables de
+     * mediaLibrary
      */
 
     /**
@@ -69,6 +74,21 @@ public class GetResponsablesTest {
     public void getResponsiblesWithoutItems() {
 	String str = ml.getResponsables();
 	assertEquals("", str);
+    }
+
+    /**
+     * 4.
+     * GIVEN la lista de items tiene elementos Videogame
+     * WHEN getResponsibles()
+     * THEN se devuelve cadena con los nombres de los responsables de los elementos
+     */
+    @Test
+    public void getResponsablesWithItemsVideogame() {
+	ml.add(new Videogame("Dark Souls", "Bandai-Namco Entertainment", "Lucía Pola", 10,
+		VideogamePlatform.PLAYSTATION));
+	ml.add(new Videogame("Hamtaro: rainbow rescue", "AlphaDream", "Borja Vázquez", 4, VideogamePlatform.NINTENDO));
+	String str = ml.getResponsables();
+	assertEquals("Bandai-Namco Entertainment, AlphaDream", str);
     }
 
 }

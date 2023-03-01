@@ -23,7 +23,6 @@ public class MediaLibrary {
     /**
      * Devuelve el número de elementos de la colección de items
      * 
-     * @param item
      * @return el numero de items de la coleccion
      */
     public int getNumberOfItemsOwned() {
@@ -81,13 +80,15 @@ public class MediaLibrary {
 	 * for (Item item : items) {
 	 * stringBuilder.append(item.getResponsable() + ", "); //arreglar la ',' al final del último
 	 */
-	if(items.size() > 0) {   // si hay elementos en la lista
+	if (items.size() > 0) { // si hay elementos en la lista
 	    for (int i = 0; i < items.size() - 1; i++) {
-		    stringBuilder.append(items.get(i).getResponsable() + ", ");
-		}
-		stringBuilder.append(items.get(items.size()-1).getResponsable());
-		return stringBuilder.toString();
-	}else {
+		stringBuilder.append(items.get(i)
+		    .getResponsable() + ", ");
+	    }
+	    stringBuilder.append(items.get(items.size() - 1)
+		.getResponsable());
+	    return stringBuilder.toString();
+	} else {
 	    return stringBuilder.toString();
 	}
     }

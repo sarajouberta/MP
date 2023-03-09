@@ -33,9 +33,9 @@ public class GetItemsForTestingTest {
 
     /**
      * 1.
-     * GIVEN arrayList<Item> con elementos
+     * GIVEN arrayList con elementos
      * WHEN getItemsforTesting()
-     * THEN devuelve una lista copia del arrayList<Item>
+     * THEN devuelve una lista copia del arrayList
      */
     @Test
     public void getItemsForTestingSemifullArrayList() {
@@ -49,9 +49,9 @@ public class GetItemsForTestingTest {
 
     /**
      * 2.
-     * GIVEN arrayList<Item> sin elementos
+     * GIVEN arrayList sin elementos
      * WHEN getItemsforTesting()
-     * THEN devuelve una lista copia del arrayList<Item> vacía
+     * THEN devuelve una lista copia del arrayList vacía
      */
     @Test
     public void getItemsForTestingEmptyArrayList() {

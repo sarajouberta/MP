@@ -3,6 +3,8 @@ package uo.mp.minesweeper.game;
 import uo.mp.minesweeper.model.Board;
 
 public class Game {
+	
+	Board board;
 
 	/**
 	 * El constructor de Game recibe un objeto Board
@@ -10,6 +12,8 @@ public class Game {
 	 */
 	public Game(Board board) {
 		//ArgumentChecks.isTrue(board != null,"Invalid board");
+		this.board = board;
+		
 	}
 	
 	/**

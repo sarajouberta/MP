@@ -14,7 +14,7 @@ public class Canvas {
 	/**
 	 * Adds to the canvas a new object to be drawn 
 	 * @param drawable something that can be drawn
-	 * @throws IAE if argument is null
+	 *
 	 */
 	public void add(Drawable drawable) {
 		drawables.add(drawable);
@@ -22,7 +22,7 @@ public class Canvas {
 
 	/**
 	 * Prints the content in the canvas
-	 * @implNote it will print in console the description of the items  
+	 * it will print in console the description of the items  
 	 * @param out output
 	 */
 	public void draw(PrintStream out) {

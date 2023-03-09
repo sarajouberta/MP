@@ -6,7 +6,7 @@ public interface Borrowable {
      * Método que devuelve un valor booleano indicando si el item está
      * disponible o no
      * 
-     * @return
+     * @return true si disponibles/ false en caso contrario
      */
     public boolean isAvailable();
 

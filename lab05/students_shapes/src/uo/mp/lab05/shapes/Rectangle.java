@@ -28,9 +28,7 @@ public class Rectangle extends Shape{
 	 * @param width of the shape, in pixels
 	 * @param height height of the rectangle, in pixels
 	 * @param colour 
-	 * @throws IAE if some argument is illegal
-	 * 			coordinates, width, height is 0 or under 0
-	 * 			colour is null
+	 * 
 	 */
 	public Rectangle(int x, int y, int width, int height, Colour colour) {
 		super(x, y, colour);

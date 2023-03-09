@@ -1,5 +1,7 @@
 package uo.mp.minesweeper.model;
 
+import java.util.Random;
+
 import uo.mp.lab.util.check.ArgumentChecks;
 
 public class Board {
@@ -7,7 +9,9 @@ public class Board {
 	public static final int DEFAULT_DIMENSION = 9;
 	public static final int DEFAULT_PERCENTAGE = 12;  //redondear alza
 	private Square[][] board;
-	
+	private boolean boardState = true; //por defecto el estado es true (no ha explotado ninguna mina)
+	private int numberOfFlags;
+	private Random rdn = new Random();   // para no tener que instanciar random en los métodos
 	
 	/**
 	 * Construye un tablero de width x height posiciones, en la que el porcentaje de
@@ -17,14 +21,26 @@ public class Board {
 	 * @param width
 	 * @param height
 	 * @param percentage
+	 * 
+	 * ¿REDONDEO?
 	 */
 	public Board(int width, int height, int percentage) {
 		//ArgumentChecks.
-		board = new Square[width][height];
-		double numberOfMines = (width*height)*0.12;  //calcular nº de minas que corresponden (12%)
+		board = new Square[height][width];
+		double numberOfMines = Math.ceil((height*width)*0.12);  //calcular nº de minas(12%), redondeo alza
+		numberOfFlags = (int)numberOfMines;  //se establece el mismo número de banderas que de minas
+		//primero: asignar el 12% aleatorio:
+		for (int i = 0; i < numberOfMines; i++) {  //
+			int rdnI = rdn.nextInt(height);   //generar posición i aleatoria
+			int rdnJ = rdn.nextInt(width);     //generar posición j aleatoria
+			board[rdnI][rdnJ].setValue(-1);  //asignar mina
+		}
+		//asignar al resto de posiciones un valor aleatorio entre (1 y 8)
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
-				
+				if(board[i][j] == null) {
+					board[i][j].setValue(rdn.nextInt(9));
+				}
 			}
 		}
 		
@@ -39,6 +55,7 @@ public class Board {
 	 */
 	public Board(int mines, Square[][] squares) {
 		
+		
 	}
 	
 	/**
@@ -47,8 +64,7 @@ public class Board {
 	 * @return
 	 */
 	public boolean hasExploded() {
-		
-		return false;
+		return !boardState; //si el estado es true: devuelve false (no ha explotado nada)
 	}
 	
 	/**
@@ -57,7 +73,11 @@ public class Board {
 	 * @param y
 	 */
 	public void stepOn(int x, int y) {
-		
+		ArgumentChecks.isTrue(x >= 0 && x < board.length, "Invalid x");
+		ArgumentChecks.isTrue(y >= 0 && y < board[0].length, "Invalid y");
+		if(!board[x][y].isOpened()) {
+			board[x][y].open();  //si no estaba descubierta, la abre
+		}
 	}
 	
 	/**
@@ -67,7 +87,12 @@ public class Board {
 	 * @param y
 	 */
 	public void flag(int x, int y) {
-		
+		ArgumentChecks.isTrue(x >= 0 && x < board.length, "Invalid x");
+		ArgumentChecks.isTrue(y >= 0 && y < board[0].length, "Invalid y");
+		if(!board[x][y].isOpened() && !board[x][y].isFlagged()) {
+			board[x][y].flag();
+			numberOfFlags --; //se decrementa el contador de banderas del tablero
+		}
 	}
 	
 	/**
@@ -76,7 +101,12 @@ public class Board {
 	 * @param y
 	 */
 	public void unflag(int x, int y) {
-		
+		ArgumentChecks.isTrue(x >= 0 && x < board.length, "Invalid x");
+		ArgumentChecks.isTrue(y >= 0 && y < board[0].length, "Invalid y");
+		if(board[x][y].isFlagged()) {
+			board[x][y].unflag();
+			numberOfFlags ++; //se incrementa el número de banderas del tablero
+		}
 	}
 	
 	/**
@@ -84,7 +114,13 @@ public class Board {
 	 * estado OPENED.
 	 */
 	public void unveil() {
-		
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				if(!board[i][j].isOpened()) {
+					board[i][j].open();   //destapa todas las casillas cerradas del tablero
+				}
+			}
+		}
 	}
 	
 	/**
@@ -93,8 +129,7 @@ public class Board {
 	 * @return
 	 */
 	public int getNumberOfFlagsLeft() {
-		
-		return 0;
+		return numberOfFlags;
 	}
 	
 	/**
@@ -111,18 +146,32 @@ public class Board {
 	alguna mina).
 	 */
 	public void markAsExploded() {
-		
+		boardState = false;  //se marca el tablero como explotado (false)
 	}
 	
 	/**
 	 * Devuelve un array de caracteres que representa el estado del tablero de juego.
 	 * Cada posición del array que devuelve, contendrá el carácter que representa la
-	 * casilla gráficamente de acuerdo a su valor y estado actual.
+	 * casilla gráficamente de acuerdo a su valor y estado actual. 
+	 * 0: casilla vacía
+	 * 1-8: pista numérica
+	 * -1: casilla con mina                  REVISAR ESTO
 	 * @return
 	 */
 	public char[][] getState(){
-		
-		return null;
+		char[][] stateBoard = new char[board.length][board[0].length];
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				if(board[i][j].getValue() == -1) { //si tiene mina
+					stateBoard[i][j]= 'm';        // no puedo poner -1 en char
+				}else if(board[i][j].getValue() >= 1 && board[i][j].getValue() <= 8) { //si tiene pista numérica
+					stateBoard[i][j] = 'p'; 
+				}else { // casilla vacía
+					stateBoard[i][j] = '0'; 
+				}
+			}
+		}
+		return stateBoard;
 	}
 	
 	/**
@@ -131,8 +180,13 @@ public class Board {
 	 * @return
 	 */
 	public Square[][] getSquares(){
-		
-		return null;
+		Square[][] boardCopy = new Square[board.length][board[0].length];
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				boardCopy[i][j] = board[i][j];    //copia el contenido el tablero en uno auxiliar
+			}
+		}
+		return boardCopy; //se devuelve la copia del tablero
 	}
 
 	/**
@@ -150,23 +204,7 @@ public class Board {
 	private void setBoard(Square[][] board) {
 		//ArgumentChecks.isTrue();
 		this.board = board;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	
 	
 }

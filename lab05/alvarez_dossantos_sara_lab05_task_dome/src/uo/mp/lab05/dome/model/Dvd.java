@@ -13,7 +13,7 @@ public class Dvd extends Item {
      * 
      * @param theTitle    String for title
      * @param theDirector String for director
-     * @param time        integer for time
+     * @param playingTime integer for time
      * @param basePrice   precio base
      */
     public Dvd(String theTitle, String theDirector, int playingTime, double basePrice) {

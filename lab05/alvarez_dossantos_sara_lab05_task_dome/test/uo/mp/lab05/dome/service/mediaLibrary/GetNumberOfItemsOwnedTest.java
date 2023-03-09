@@ -26,7 +26,7 @@ public class GetNumberOfItemsOwnedTest {
     }
 
     /**
-     * GIVEN Arraylist<Item> vacía
+     * GIVEN Arraylist vacía
      * WHEN getNumberOfItemsOwned()
      * THEN devuelve 0
      */
@@ -36,7 +36,7 @@ public class GetNumberOfItemsOwnedTest {
     }
 
     /**
-     * GIVEN Arraylist<Item> con elementos
+     * GIVEN Arraylist con elementos
      * WHEN getNumberOfItemsOwned()
      * THEN devuelve el número de elementos
      */

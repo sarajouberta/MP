@@ -17,9 +17,9 @@ import uo.mp.lab05.dome.model.Cd;
  * - Invalid title, blanks.
  * - Invalid artist, null
  * - Invalid artist, blanks
- * - Invalid playingTime '<' 0
+ * - Invalid playingTime menor que 0
  * - Invalid playingTime = 0
- * - Invalid tracks '<' 0
+ * - Invalid tracks menor que 0
  * - Invalid tracks = 0
  */
 public class CDTest {
@@ -171,7 +171,7 @@ public class CDTest {
     }
 
     /**
-     * GIVEN valid arguments, except time '<' 0
+     * GIVEN valid arguments
      * WHEN new Cd(arguments)
      * THEN throws IllegalArgumentException
      */
@@ -187,7 +187,7 @@ public class CDTest {
     }
 
     /**
-     * GIVEN valid arguments, except tracks '<' 0
+     * GIVEN valid arguments
      * WHEN new Cd(arguments)
      * THEN throws IllegalArgumentException
      */

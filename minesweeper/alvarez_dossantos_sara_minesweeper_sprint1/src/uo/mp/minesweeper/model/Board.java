@@ -1,5 +1,6 @@
 package uo.mp.minesweeper.model;
 
+
 import java.util.Random;
 
 import uo.mp.lab.util.check.ArgumentChecks;
@@ -22,24 +23,44 @@ public class Board {
 	 * @param height
 	 * @param percentage
 	 * 
-	 * ¿REDONDEO?
 	 */
-	public Board(int width, int height, int percentage) {
-		//ArgumentChecks.
+	public Board(int height,int width, int percentage) {
+		ArgumentChecks.isTrue(height > 0, "Invalid height");
+		ArgumentChecks.isTrue(width > 0, "Invalid width");
+		ArgumentChecks.isTrue(percentage > 0 && percentage <= 100, "Invalid percentage");
 		board = new Square[height][width];
-		double numberOfMines = Math.ceil((height*width)*0.12);  //calcular nº de minas(12%), redondeo alza
-		numberOfFlags = (int)numberOfMines;  //se establece el mismo número de banderas que de minas
-		//primero: asignar el 12% aleatorio:
-		for (int i = 0; i < numberOfMines; i++) {  //
+		int numberOfMines = Math.round(((width*height)*percentage)/100.0f);
+		
+
+		numberOfFlags = numberOfMines;  //se establece el mismo número de banderas que de minas
+		//primero: asignar el % aleatorio:
+		int minesToSet = numberOfMines;
+		do {
 			int rdnI = rdn.nextInt(height);   //generar posición i aleatoria
 			int rdnJ = rdn.nextInt(width);     //generar posición j aleatoria
-			board[rdnI][rdnJ].setValue(-1);  //asignar mina
-		}
-		//asignar al resto de posiciones un valor aleatorio entre (1 y 8)
+			
+			if(board[rdnI][rdnJ] == null) {
+				board[rdnI][rdnJ] = new Square();  //instancia la casilla
+				board[rdnI][rdnJ].setValue(-1);  //asigna mina
+				minesToSet--;
+			}
+		}while(minesToSet > 0);
+		
+		//asignar al resto de posiciones un valor según el nº de minas que tenga alrededor
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				if(board[i][j] == null) {
-					board[i][j].setValue(rdn.nextInt(9));
+					board[i][j] = new Square();  //instancia la casilla
+					int value = 0;
+					//recorre las casillas vecinas en busca de minas, comprobando que no se salga del tablero
+					for(int k = (i-1 < 0 ? 0 : i-1); k <= i+1 && k < board.length; k++) {  
+						for (int l = (j-1 < 0 ? 0 : j-1); l <= j+1 && l < board[0].length; l++) {
+							if(board[i][j].getValue() == -1) {
+								value++;
+							}	
+						}
+					}
+					board[i][j].setValue(value); // asigna pista numérica (minas alrededor)						
 				}
 			}
 		}
@@ -54,8 +75,11 @@ public class Board {
 	 * @param squares
 	 */
 	public Board(int mines, Square[][] squares) {
-		
-		
+		ArgumentChecks.isTrue(squares != null, "Invalid matrix of squares");
+		ArgumentChecks.isTrue(mines >= 0, "Invalid number of mines");
+		ArgumentChecks.isTrue(mines == getNumberOfMines(squares)); //comprobar que hay las minas indicadas
+		board = squares;
+		numberOfFlags = mines; //el número de minas es el mismo que el número de banderas
 	}
 	
 	/**
@@ -77,6 +101,9 @@ public class Board {
 		ArgumentChecks.isTrue(y >= 0 && y < board[0].length, "Invalid y");
 		if(!board[x][y].isOpened()) {
 			board[x][y].open();  //si no estaba descubierta, la abre
+			if(board[x][y].getValue() == -1) {
+				markAsExploded();
+			}
 		}
 	}
 	
@@ -137,8 +164,7 @@ public class Board {
 	 * @return
 	 */
 	public int getNumberOfMinesLeft() {
-		
-		return 0;
+		return numberOfFlags; //si quedan banderas significa que queda el mismo nº de minas por cubrir
 	}
 	
 	/**
@@ -153,22 +179,29 @@ public class Board {
 	 * Devuelve un array de caracteres que representa el estado del tablero de juego.
 	 * Cada posición del array que devuelve, contendrá el carácter que representa la
 	 * casilla gráficamente de acuerdo a su valor y estado actual. 
-	 * 0: casilla vacía
+	 * 0: casilla vacía (" ")
 	 * 1-8: pista numérica
-	 * -1: casilla con mina                  REVISAR ESTO
+	 * -1: casilla con mina                 
 	 * @return
 	 */
 	public char[][] getState(){
 		char[][] stateBoard = new char[board.length][board[0].length];
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				if(board[i][j].getValue() == -1) { //si tiene mina
-					stateBoard[i][j]= 'm';        // no puedo poner -1 en char
-				}else if(board[i][j].getValue() >= 1 && board[i][j].getValue() <= 8) { //si tiene pista numérica
-					stateBoard[i][j] = 'p'; 
-				}else { // casilla vacía
-					stateBoard[i][j] = '0'; 
+				if(board[i][j].getSquareState().equals(SquareState.OPENED)) {
+					if(board[i][j].getValue() == -1) { //si tiene mina
+						stateBoard[i][j]= '@';        // no puedo poner -1 en char
+					}else if(board[i][j].getValue() >= 1 && board[i][j].getValue() <= 8) { //si tiene pista numérica
+						stateBoard[i][j] = Character.forDigit(board[i][j].getValue(), 10); 
+					}else {
+						stateBoard[i][j] = ' ';
+					}
+				}else if(board[i][j].getSquareState().equals(SquareState.FLAGGED)) {
+					stateBoard[i][j] = (char) 182;
+				}else {
+					stateBoard[i][j] = '#';
 				}
+				
 			}
 		}
 		return stateBoard;
@@ -204,7 +237,49 @@ public class Board {
 	private void setBoard(Square[][] board) {
 		//ArgumentChecks.isTrue();
 		this.board = board;
-	}	
+	}
+
+	public int getWidth() {
+		return board[0].length;
+	}
+
+	public int getHeight() {
+		return board.length;
+	}
+
+	@Override
+	public String toString() {
+		char[][] boardToPrint = getState();  //se guarda el estado del tablero
+		StringBuilder str = new StringBuilder();
+		for (int i = 0; i < boardToPrint.length; i++) {  //bucle para añadir el estado línea por línea
+			str.append("[");
+			for (int j = 0; j < boardToPrint[0].length; j++) {
+				str.append(boardToPrint[i][j]);
+				if(j < boardToPrint[0].length -1) {  //para separar los elementos intermedios
+					str.append(",");
+				}else {   //si ya es el último elemento
+					str.append("]\n");
+				}
+			}
+		}
+		return str.toString();
+	}
+	
+	/**
+	 * Método privado para validar parámetro del constructor para tests
+	 * @return número de casillas con mina de la matriz de squares
+	 */
+	private int getNumberOfMines(Square[][] squares) {
+		int mines = 0;
+		for (int i = 0; i < squares.length; i++) {
+			for (int j = 0; j < squares[0].length; j++) {
+				if(squares[i][j].getValue() == -1) {
+					mines++;
+				}
+			}
+		}
+		return mines;
+	}
 	
 	
 }

@@ -5,7 +5,7 @@ public class Square {
 	public static final int EMPTY_SQUARE = 0;
 	public static final int MINE_SQUARE = -1;
 	public static final int MIN_CLUE = 1;
-	public static final int MAX_CLUE = 1;
+	public static final int MAX_CLUE = 8;
 	
 	private SquareState state;
 	private int value;
@@ -17,6 +17,19 @@ public class Square {
 		state = SquareState.CLOSED;
 		value = EMPTY_SQUARE;
 	}
+	
+	/*
+	 * Método para test: constructor de Square con un value determinado y un estado
+	 */
+	public Square(int value, SquareState state) {
+		this.value = value;
+		if(state == null) {
+			this.state = SquareState.CLOSED;
+		}else{
+			this.state = state;
+		}
+	}
+	
 	
 	/**
 	 * Pasa la casilla a estado OPENED si está CLOSED. En caso contrario (OPENED o FLAGGED) no hace
@@ -62,7 +75,7 @@ public class Square {
 	 */
 	@Override
 	public String toString() {
-		String str = "State: " + getState() + " Value: " + getValue();
+		String str = "State: " + getSquareState() + " Value: " + getValue();
 		return str;
 	}
 	
@@ -131,7 +144,7 @@ public class Square {
 	 * Obtiene el estado de la casilla
 	 * @return estado de la casilla
 	 */
-	private SquareState getState() {
+	public SquareState getSquareState() {
 		return state;
 	}
 
@@ -139,7 +152,7 @@ public class Square {
 	 * Establece el estado de la casilla
 	 * @param state estado de la casilla
 	 */
-	private void setState(SquareState state) {
+	public void setState(SquareState state) {
 		this.state = state;
 	}
 	

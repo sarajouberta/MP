@@ -7,7 +7,7 @@ public class LinkedList extends AbstractList {
 	Node head;
 	
 	//private¿?
-	class Node{
+	private class Node{
 		Object element;
 		Node next;
 		
@@ -19,23 +19,23 @@ public class LinkedList extends AbstractList {
 	
 	public LinkedList() {
 		super();
-		head = null;
+		head = new Node(null, null);
 	}
 	
 
 	@Override
 	public void clear() {
 		super.clear();
-		head = null;
+		head = new Node(null, null);
 	}
 
 	@Override
 	public Object get(int index) {
 		ArgumentChecks.isTrue(index >= 0 && index < numberOfElements, "Invalid index");
 		if(index == 0) {
-			return head;
+			return head.element;
 		}else {
-			getNode(index);
+			return getNode(index).element;
 		}
 	}
 
@@ -121,7 +121,7 @@ public class LinkedList extends AbstractList {
 			removed = aux.next;
 			aux.next = aux.next.next;
 		}
-		return removed;
+		return removed.element;
 	}
 	
 	/**
@@ -155,6 +155,19 @@ public class LinkedList extends AbstractList {
 			position++;
 		}
 		return node;
+	}
+
+
+	@Override
+	public boolean remove(Object o) {
+		ArgumentChecks.isTrue(o != null, "Invalid object");
+		int index = indexOf(o);
+		if(index == -1) {
+			return false;
+		}else {
+			remove(index);
+			return true;
+		}
 	}
 	
 

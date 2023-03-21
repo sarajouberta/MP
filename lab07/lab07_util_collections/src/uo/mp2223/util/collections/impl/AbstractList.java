@@ -23,14 +23,13 @@ public abstract class AbstractList implements List{
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		return indexOf(o) !=  -1 ? true : false;
 	}
 
 	@Override
 	public boolean add(Object element) {
-		// TODO Auto-generated method stub
-		return false;
+		add(size(), element);
+		return true;
 	}
 	
 	@Override
@@ -38,11 +37,6 @@ public abstract class AbstractList implements List{
 		numberOfElements = 0;
 	}
 	
-	@Override
-	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 
 	

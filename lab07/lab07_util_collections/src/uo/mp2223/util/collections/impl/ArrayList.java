@@ -16,34 +16,7 @@ public class ArrayList extends AbstractList {
 		elements = new Object[INITIAL_CAPACITY];
 	}
 
-	/**
-	 * Removes first appearance of the instance of the specified element from this collection,
-	 * if it is present. 
-	 * More formally, removes an element 
-	 * {@code e} such that {@code o == null ? o == null : o.equals(e))}, 
-	 * if this collection contains one or more such elements. 
-	 * 
-	 * @param o, the element to be removed from this collection, if present
-	 * 
-	 * @return {@code true} if an element was removed as a result of this call
-	 */
-	@Override
-	public boolean remove(Object o) {
-		ArgumentChecks.isTrue(o != null, "Invalid object");
-		boolean removed= false;
-		if(numberOfElements > 0) {
-			for (int i = 0; i < numberOfElements; i++) {
-				if(elements[i].equals(o)) {
-					for(int j = i; j < numberOfElements-1; j++) {
-						elements[i] = elements[i+1]; //si se encuentra: todos los elementos 1 posición menos
-					}
-					numberOfElements--;
-					removed = true;
-				}
-			}
-		}
-		return removed;
-	}
+
 
 
 	@Override
@@ -64,28 +37,38 @@ public class ArrayList extends AbstractList {
 	 * @throws IndexOutOfBoundsException
 	 *             if the index is out of range (
 	 *             {@code index < 0 || index >= size()})
-	 * 
 	 */
+	//¿añadir al final? se supone que es set, pero ¿index >= size()?
 	@Override
 	public Object set(int index, Object element) {
 		ArgumentChecks.isTrue(element != null, "Invalid element");
-		ArgumentChecks.isTrue(index >= 0 && index < numberOfElements, "Invalid index");
-		Object aux = elements[index];
-		elements[index] = element;
-		return aux;
+		ArgumentChecks.isTrue(index >= 0 && index <= numberOfElements, "Invalid index");
+		if(index == size()) {
+			add(size(), element);
+			return null;
+		}else {
+			Object aux = elements[index];
+			elements[index] = element;
+			return aux;
+		}
+		
 	}
 
 	@Override
 	public void add(int index, Object element) {
 		ArgumentChecks.isTrue(element != null, "Invalid element");
 		ArgumentChecks.isTrue(index >= 0 && index <= numberOfElements, "Invalid index");
-		if(index == elements.length) {
+		if(size() == elements.length) {
 			moreMemory(size());
 		}
-		for (int i = size(); i > index; i--) {   
-			elements[i] = elements[i-1];   /*se mueve 1 posición a la dcha cada elemento si se 
-			                                 añade en posición intermedia*/
+		
+		if(index < size()) {
+			for (int i = size(); i >= index; i--) {   
+				elements[i] = elements[i-1];   /*se mueve 1 posición a la dcha cada elemento si se 
+				                                 añade en posición intermedia*/
+			}
 		}
+		
 		elements[index] = element;  //se añade el nuevo elemento en la posición deseada
 		numberOfElements++;
 	}
@@ -101,6 +84,43 @@ public class ArrayList extends AbstractList {
 			newArray[i] = elements[i];  //se copian los elementos del array original
 		}
 		elements = newArray; //se sustitye el array original por el nuevo
+	}
+	
+	/**
+	 * Removes first appearance of the instance of the specified element from this collection,
+	 * if it is present. 
+	 * More formally, removes an element 
+	 * {@code e} such that {@code o == null ? o == null : o.equals(e))}, 
+	 * if this collection contains one or more such elements. 
+	 * 
+	 * @param o, the element to be removed from this collection, if present
+	 * 
+	 * @return {@code true} if an element was removed as a result of this call
+	 */
+	@Override
+	public boolean remove(Object o) {
+		ArgumentChecks.isTrue(o != null, "Invalid object");
+		int index = indexOf(o);
+		if(index == -1) {
+			return false;
+		}else {
+			remove(index);
+			return true;
+		}
+		
+//		boolean removed= false;
+//		int i = 0;
+//		while(i< numberOfElements && !removed) {
+//			if(elements[i].equals(o)) {
+//				for(int j = i; j < numberOfElements-1; j++) {
+//					elements[i] = elements[i+1]; //si se encuentra: todos los elementos 1 posición menos
+//				}
+//				numberOfElements--;
+//				removed = true;
+//			}
+//			i++;
+//		}
+//		return removed;
 	}
 
 	/**

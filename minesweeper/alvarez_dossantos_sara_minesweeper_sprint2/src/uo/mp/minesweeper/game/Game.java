@@ -34,9 +34,10 @@ public class Game {
 	public void play() {
 		System.out.println("Welcome to Minesweepwer");
 		System.out.println("Ready to start");
-		long time = System.currentTimeMillis();
-		while(!board.hasExploded()) {
-			System.out.println("Time: " + (System.currentTimeMillis()-time));//contador tiempo¿?¿?¿?¿?¿?¿?¿?
+		long time = System.currentTimeMillis()/100;
+		boolean inGame = true;
+		while(inGame) {
+			System.out.println("Time: " + (System.currentTimeMillis()-time)/100); //pa
 			System.out.println("Flags left: " +board.getNumberOfFlagsLeft());
 			System.out.println(board.toString());
 			
@@ -71,6 +72,14 @@ public class Game {
 				break;
 			default:
 				System.err.println("Opción: " + op);
+			}
+			
+			if(board.hasExploded()) {
+				inGame = false;
+				System.out.println("Perdiste, explotó una mina");
+			}else if(board.winner()) {
+				inGame = false;
+				System.out.println("Ganaste!");
 			}
 		}
 	}

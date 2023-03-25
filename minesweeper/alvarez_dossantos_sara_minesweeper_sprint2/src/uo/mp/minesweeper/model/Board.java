@@ -1,9 +1,14 @@
 package uo.mp.minesweeper.model;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import uo.mp.lab.util.check.ArgumentChecks;
+import uo.mp.minesweeper.game.square.actions.BlowUpAction;
+import uo.mp.minesweeper.game.square.actions.ClearAction;
+import uo.mp.minesweeper.game.square.actions.NullAction;
 
 public class Board {
 	
@@ -11,6 +16,7 @@ public class Board {
 	public static final int DEFAULT_PERCENTAGE = 12;  //redondear alza
 	private Square[][] board;
 	private boolean boardState = true; //por defecto el estado es true (no ha explotado ninguna mina)
+	private int numberOfMines;
 	private int numberOfFlags;
 	private Random rdn = new Random();   // para no tener que instanciar random en los métodos
 	
@@ -29,38 +35,49 @@ public class Board {
 		ArgumentChecks.isTrue(width > 0, "Invalid width");
 		ArgumentChecks.isTrue(percentage > 0 && percentage <= 100, "Invalid percentage");
 		board = new Square[height][width];
-		int numberOfMines = Math.round(((width*height)*percentage)/100.0f);
-		
-
+		this.numberOfMines = Math.round(((width*height)*percentage)/100.0f);
+	
 		numberOfFlags = numberOfMines;  //se establece el mismo número de banderas que de minas
-		//primero: asignar el % aleatorio:
+		//se instancian todas las casillas del tablero
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				board[i][j] = new Square();
+			}
+		}
+		//asignar el % aleatorio:
 		int minesToSet = numberOfMines;
 		do {
 			int rdnI = rdn.nextInt(height);   //generar posición i aleatoria
 			int rdnJ = rdn.nextInt(width);     //generar posición j aleatoria
 			
-			if(board[rdnI][rdnJ] == null) {
-				board[rdnI][rdnJ] = new Square();  //instancia la casilla
-				board[rdnI][rdnJ].setValue(-1);  //asigna mina
-				minesToSet--;
-			}
+			board[rdnI][rdnJ].setValue(-1);  //asigna mina
+			board[rdnI][rdnJ].setAction(new BlowUpAction(this));
+			minesToSet--;
 		}while(minesToSet > 0);
+		
 		
 		//asignar al resto de posiciones un valor según el nº de minas que tenga alrededor
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
-				if(board[i][j] == null) {
-					board[i][j] = new Square();  //instancia la casilla
+				if(board[i][j].getValue() != -1) {   //si no tiene mina
+					List<Square> neighbours = new ArrayList<Square>();
 					int value = 0;
 					//recorre las casillas vecinas en busca de minas, comprobando que no se salga del tablero
 					for(int k = (i-1 < 0 ? 0 : i-1); k <= i+1 && k < board.length; k++) {  
 						for (int l = (j-1 < 0 ? 0 : j-1); l <= j+1 && l < board[0].length; l++) {
-							if(board[i][j].getValue() == -1) {
-								value++;
-							}	
+							//si no es la propia casilla, se añade como vecino
+							if(!(i == k && j == l)) {
+								neighbours.add(board[k][l]);   //tenog de vecino a Spiderman
+								//si es una casilla ya instanciada con mina
+								if(board[k][l] != null && board[k][l].getValue() == -1) {
+									value++;
+								}	
+							}
 						}
 					}
-					board[i][j].setValue(value); // asigna pista numérica (minas alrededor)						
+					board[i][j].setValue(value); // asigna pista numérica (minas alrededor)
+					//asigna acción: como está dentro del if ya no puede ser -1(mina)
+					board[i][j].setAction(value == 0 ? new ClearAction(neighbours) : new NullAction());
 				}
 			}
 		}
@@ -80,6 +97,7 @@ public class Board {
 		ArgumentChecks.isTrue(mines == getNumberOfMines(squares)); //comprobar que hay las minas indicadas
 		board = squares;
 		numberOfFlags = mines; //el número de minas es el mismo que el número de banderas
+		numberOfMines = mines;
 	}
 	
 	/**
@@ -99,11 +117,28 @@ public class Board {
 	public void stepOn(int x, int y) {
 		ArgumentChecks.isTrue(x >= 0 && x < board.length, "Invalid x");
 		ArgumentChecks.isTrue(y >= 0 && y < board[0].length, "Invalid y");
-		if(!board[x][y].isOpened()) {
-			board[x][y].open();  //si no estaba descubierta, la abre
-			if(board[x][y].getValue() == -1) {
-				markAsExploded();
-			}
+		board[x][y].stepOn();
+	}
+	
+	/**
+	 * Método para saber si se ha ganado la partida
+	 * @return
+	 */
+	public boolean winner() {
+		int closedSquares = 0;  
+		//se recorre el tablero para saber el nº de casillas que quedan cerradas
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				if(board[i][j].getSquareState() == SquareState.CLOSED || board[i][j].getSquareState() == SquareState.FLAGGED) {
+					closedSquares++;
+				}
+			}			
+		}
+		//si el nº de casilas cerradas == minas: banderas puestas correctamente sobre minas
+		if(closedSquares == numberOfMines && numberOfFlags == 0) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	
@@ -224,14 +259,6 @@ public class Board {
 
 	/**
 	 * 
-	 * @return
-	 */
-	private Square[][] getBoard() {
-		return board;
-	}
-
-	/**
-	 * 
 	 * @param board
 	 */
 	private void setBoard(Square[][] board) {
@@ -280,6 +307,8 @@ public class Board {
 		}
 		return mines;
 	}
+	
+	
 	
 	
 }

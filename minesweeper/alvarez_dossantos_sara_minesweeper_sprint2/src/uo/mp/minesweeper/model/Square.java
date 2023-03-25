@@ -1,5 +1,7 @@
 package uo.mp.minesweeper.model;
 
+import uo.mp.minesweeper.game.square.actions.Action;
+
 public class Square {
 	
 	public static final int EMPTY_SQUARE = 0;
@@ -9,6 +11,8 @@ public class Square {
 	
 	private SquareState state;
 	private int value;
+	private Action action;
+	
 
 	/**
 	 * Constructor sin parámetros que crea una casilla con estado CLOSED y valor 0
@@ -38,6 +42,7 @@ public class Square {
 	public void stepOn() {
 		if(state == SquareState.CLOSED) {
 			state = SquareState.OPENED;
+			action.execute();
 		}
 	}
 	
@@ -155,6 +160,16 @@ public class Square {
 	public void setState(SquareState state) {
 		this.state = state;
 	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}
+	
+	
 	
 }
 

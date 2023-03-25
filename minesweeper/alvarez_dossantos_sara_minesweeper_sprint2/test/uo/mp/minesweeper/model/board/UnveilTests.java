@@ -74,6 +74,8 @@ public class UnveilTests {
 	public void unveilWithOpenedSquares() {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixBase);
 		board = new Board(0, ts);
+		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
+		
 		for (int i = 0; i < ts.length; i++) {
 			board.stepOn(i, i);  //se abre la diagonal del tablero
 		}

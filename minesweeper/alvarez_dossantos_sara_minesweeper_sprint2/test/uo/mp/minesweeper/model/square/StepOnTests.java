@@ -5,7 +5,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import uo.mp.minesweeper.game.square.actions.ClearAction;
+import uo.mp.minesweeper.game.square.actions.NullAction;
 import uo.mp.minesweeper.model.Square;
+import uo.mp.minesweeper.model.SquareState;
 
 public class StepOnTests {
 
@@ -13,7 +16,8 @@ public class StepOnTests {
 	
 	@BeforeEach
 	public void setUp() {
-		square = new Square();  //por defecto: closed y valor 0 (empty)
+		square = new Square(1, SquareState.CLOSED);  //closed y valor 1 (con pista)
+		square.setAction(new NullAction()); //se establece su acción (no hace nada)
 	}
 	
 	/**

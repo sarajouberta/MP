@@ -44,17 +44,18 @@ public class StepOnTests {
 	 * 2.
 	 * GIVEN Casilla con bandera con mina
 	 * WHEN stepOn()
-	 * THEN destapa la casilla correctamente
+	 * THEN la casilla permanece cerrada con bandera
 	 */
 	@Test
 	public void stepOnFlaggedMineSquare() {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
+		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		board.flag(1, 1); //se marca la casilla con bandera
 		board.stepOn(1, 1); //se destapa la casilla con bandera
 		Square[][] aux = board.getSquares();  //se obtiene el estado de todas las casillas del tablero
-		assertTrue(aux[1][1].isOpened());  //se comprueba que la posición establecida está destapada
-		
+		assertTrue(!aux[1][1].isOpened());  //se comprueba que la casilla no se ha abierto
+		assertTrue(aux[1][1].isFlagged()); //se comprueba que la casilla sigue marcada
 	}
 	
 	/**
@@ -67,6 +68,7 @@ public class StepOnTests {
 	public void stepOnFlaggedEmptySquare() {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
+		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		board.stepOn(0, 0); //se destapa una casilla sin mina
 		Square[][] aux = board.getSquares();  //se obtiene el estado de todas las casillas del tablero
 		assertTrue(aux[0][0].isOpened());  //se comprueba que la posición establecida está destapada
@@ -83,6 +85,7 @@ public class StepOnTests {
 	public void stepOnMineSquare() {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
+		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		board.stepOn(1, 1); //se destapa la casilla con  mina
 		Square[][] aux = board.getSquares();  //se obtiene el estado de todas las casillas del tablero
 		assertTrue(aux[1][1].isOpened());  //se comprueba que la posición establecida está destapada
@@ -99,6 +102,7 @@ public class StepOnTests {
 	public void stepOnSquareWithClue() {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
+		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		board.stepOn(0, 0); //se destapa una casilla con pista numérica
 		Square[][] aux = board.getSquares();  //se obtiene el estado de todas las casillas del tablero
 		assertTrue(aux[0][0].isOpened());  //se comprueba que la posición establecida está destapada
@@ -115,6 +119,7 @@ public class StepOnTests {
 	public void stepOnEmptySquare() {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
+		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		board.stepOn(0, 4); //se destapa una casilla sin pista numérica
 		Square[][] aux = board.getSquares();  //se obtiene el estado de todas las casillas del tablero
 		assertTrue(aux[0][4].isOpened());  //se comprueba que la posición establecida está destapada

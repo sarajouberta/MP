@@ -61,19 +61,22 @@ public class GetStateTests {
 	 * 3.
 	 * GIVEN Tablero en estado intermedio de juego (closed/opened/flagged)
 	 * WHEN getState()
-	 * THEN se muestra el estado de cada casilla correctamente
+	 * THEN se muestra el estado de cada casilla correctamente:
+			{'¶','#','1',' ',' '},
+			{'1','#','1',' ',' '},
+			{'1','1','1',' ',' '},
+			{' ',' ',' ',' ',' '},
+			{' ',' ',' ',' ',' '}
 	 */
 	@Test
 	public void getStateMiddleGameBoard() {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero con una mina y una bandera
+		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		//se pone el tablero en un estado mixto:
-		board.flag(0, 0);
-		for (int i = 1; i < ts.length; i++) {
-			for (int j = 0; j < ts[0].length; j++) {
-				board.stepOn(i, j);  //se destapa tood el tablero menos la primera fila
-			}	
-		}
+		board.flag(0, 0);   //se pone una bandera
+		board.stepOn(1, 0);  //se destata una casilla con pista
+		board.stepOn(0, 4);  //se destapa una casilla vacía: destapa casillas vecinas
 		char[][] aux = board.getState(); 
 		for (int i = 0; i < aux.length; i++) {
 			for (int j = 0; j < aux[0].length; j++) {

@@ -6,8 +6,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import uo.mp.minesweeper.TestUtil;
-import uo.mp.minesweeper.model.Board;
-import uo.mp.minesweeper.model.Square;
+import uo.mp.minesweeper.game.Board;
+import uo.mp.minesweeper.square.Square;
 
 public class ExecuteClearActionTest {
 

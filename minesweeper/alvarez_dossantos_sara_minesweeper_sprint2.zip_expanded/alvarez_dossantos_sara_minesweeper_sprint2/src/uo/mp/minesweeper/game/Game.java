@@ -76,11 +76,9 @@ public class Game {
 			
 			if(board.hasExploded()) {
 				inGame = false;
-				board.unveil();
 				System.out.println("Perdiste, explotó una mina");
 			}else if(board.winner()) {
 				inGame = false;
-				board.unveil();
 				System.out.println("Ganaste!");
 			}
 		}

@@ -1,4 +1,4 @@
-package uo.mp.minesweeper.model;
+ package uo.mp.minesweeper.game;
 
 
 import java.util.ArrayList;
@@ -9,6 +9,8 @@ import uo.mp.lab.util.check.ArgumentChecks;
 import uo.mp.minesweeper.game.square.actions.BlowUpAction;
 import uo.mp.minesweeper.game.square.actions.ClearAction;
 import uo.mp.minesweeper.game.square.actions.NullAction;
+import uo.mp.minesweeper.square.Square;
+import uo.mp.minesweeper.square.SquareState;
 
 public class Board {
 	
@@ -36,16 +38,24 @@ public class Board {
 		ArgumentChecks.isTrue(percentage > 0 && percentage <= 100, "Invalid percentage");
 		board = new Square[height][width];
 		this.numberOfMines = Math.round(((width*height)*percentage)/100.0f);
+	
 		numberOfFlags = numberOfMines;  //se establece el mismo número de banderas que de minas
 		//se instancian todas las casillas del tablero
 		initialiseSquares();
 		//asignar el % aleatorio:
 		setInitialMines();
+		
 		//asignar al resto de posiciones un valor según el nº de minas que tenga alrededor
 		setInitialHints();
+		
+		
+		
 	}
 	
-	
+	/**
+	 *  Método privado para asignar los valores de pistas en el constructor.
+	 *  Recorre los vecinos de cada casilla para asignar su valor correspondiente.
+	 */
 	private void setInitialHints() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
@@ -57,7 +67,7 @@ public class Board {
 						for (int l = (j-1 < 0 ? 0 : j-1); l <= j+1 && l < board[0].length; l++) {
 							//si no es la propia casilla, se añade como vecino
 							if(!(i == k && j == l)) {
-								neighbours.add(board[k][l]);   //tenog de vecino a Spiderman
+								neighbours.add(board[k][l]); 
 								//si es una casilla ya instanciada con mina
 								if(board[k][l] != null && board[k][l].getValue() == -1) {
 									value++;
@@ -73,12 +83,15 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Método privado para asignar minas iniciales en el constructor
+	 */
 	private void setInitialMines() {
 		int minesToSet = numberOfMines;
 		do {
 			int rdnI = rdn.nextInt(board.length);   //generar posición i aleatoria
 			int rdnJ = rdn.nextInt(board[0].length);     //generar posición j aleatoria
-			if(board[rdnI][rdnJ].getValue() != -1) {  //si no hay mina ya (por si sale posición aleatoria repetida)
+			if(board[rdnI][rdnJ].getValue() != -1) {   //si ya tiene mina(por si sale la misma pos aleatoria)
 				board[rdnI][rdnJ].setValue(-1);  //asigna mina
 				board[rdnI][rdnJ].setAction(new BlowUpAction(this));
 				minesToSet--;
@@ -86,6 +99,9 @@ public class Board {
 		}while(minesToSet > 0);
 	}
 
+	/**
+	 * Método privado para inicializar las casillas del tablero en el constructor
+	 */
 	private void initialiseSquares() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
@@ -288,18 +304,36 @@ public class Board {
 	public String toString() {
 		char[][] boardToPrint = getState();  //se guarda el estado del tablero
 		StringBuilder str = new StringBuilder();
-		for (int i = 0; i < boardToPrint.length; i++) {  //bucle para añadir el estado línea por línea
-			str.append("[");
+		str.append("    ");
+		for (int i = 0; i < boardToPrint.length; i++) {  //para añadir nº de coordenada j
+			str.append(i + "   ");
+		}
+		str.append("\n");   //cambiar de línea
+		String separator = betweenLines(board[0].length); //se obtiene el separador del tablero
+		str.append(separator); //imprimir separador de líneas
+		for (int i = 0; i < boardToPrint.length; i++) {  //bucle para añadir contenido de línea
+			str.append(i + " ");
+			str.append("| ");
 			for (int j = 0; j < boardToPrint[0].length; j++) {
 				str.append(boardToPrint[i][j]);
 				if(j < boardToPrint[0].length -1) {  //para separar los elementos intermedios
-					str.append(",");
-				}else {   //si ya es el último elemento
-					str.append("]\n");
+					str.append(" | ");
 				}
 			}
+			str.append("\n");
+			str.append(separator);
 		}
 		return str.toString();
+	}
+	
+	private String betweenLines(int columns) {
+		StringBuilder betweenLine = new StringBuilder();
+		betweenLine.append("  ");
+		for (int i = 0; i < columns -1; i++) {
+			betweenLine.append("+---");
+		}
+		betweenLine.append("+---+\n");
+		return betweenLine.toString();
 	}
 	
 	/**
@@ -317,6 +351,59 @@ public class Board {
 		}
 		return mines;
 	}
+	
+	
+	//Minesweeper3
+	
+	/**
+	 * Busca una casilla vacía al azar y ejecuta stepOn sobre ella para descubrir una isla. 
+	 * La casilla escogida al azar no podrá ser una esquina del tablero.
+	 * Este método se llama una vez antes de mostrar el tablero y solicitar la primera
+	 * operación o comando al usuario.
+	 */
+	public void uncoverWelcomeArea() {
+		boolean squareFound = false;
+		do {
+			int rdnI = rdn.nextInt(board.length);   //generar posición i aleatoria
+			int rdnJ = rdn.nextInt(board[0].length);     //generar posición j aleatoria
+			if(checkNotCorner(rdnI, rdnJ)){
+				if(board[rdnI][rdnJ].getValue() == 0) {  //si no es esquina y está vacía
+					squareFound = true;
+					this.stepOn(rdnI, rdnJ);
+				}
+			}
+		}while(!squareFound);
+	}
+
+	/*
+	 * Devuelve true si la coordenada no es ninguna de las esquinas del tablero
+	 * @param rdnI
+	 * @param rdnJ
+	 * @return
+	 */
+	private boolean checkNotCorner(int rdnI,int rdnJ) {
+		return !((rdnI == 0 && rdnJ == 0)   //si no es la esquina sup. izda.
+				 |(rdnI == 0 && rdnJ == board.length-1) //si no es la esquina sup. dcha.
+				 |(rdnI == board.length-1 && rdnJ == 0)  //si no es la esquina inf. izda.
+				 |(rdnI == board.length-1 && rdnJ == board[0].length-1));  //si no es la esquina inf. dcha.
+	}
+	
+	/**
+	 * Método que devuelve el número de filas del tablero
+	 * @return n1 de filas
+	 */
+	public int getNumberOfRows() {
+		return board.length;
+	}
+	
+	/**
+	 * Método que devuelve el número de columnas del tablero
+	 * @return n1 de columnas
+	 */
+	public int getNumberOfColumns() {
+		return board[0].length;
+	}
+	
 	
 	
 	

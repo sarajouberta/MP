@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 
 public class FlagTests {
@@ -29,9 +30,10 @@ Square square;
 	 * GIVEN opened square
 	 * WHEN unflag()
 	 * THEN the square remains opened
+	 * @throws GameException 
 	 */
 	@Test
-	public void flagOpenedSquare() {
+	public void flagOpenedSquare() throws GameException {
 		square.open();  //default:closed
 		square.flag();
 		assertTrue(square.isOpened());
@@ -42,9 +44,10 @@ Square square;
 	 * GIVEN closed square
 	 * WHEN flag()
 	 * THEN the square change
+	 * @throws GameException 
 	 */
 	@Test
-	public void flagClosedSquare() {
+	public void flagClosedSquare() throws GameException {
 		square.flag();  //default: closed
 		assertTrue(square.isFlagged());
 	}
@@ -53,12 +56,16 @@ Square square;
 	 * 3.
 	 * GIVEN flagged square
 	 * WHEN flag()
-	 * THEN the square remains flagged
+	 * THEN GameException and the square remains flagged
+	 * @throws GameException 
 	 */
 	@Test
-	public void flagFlaggedSquare() {
+	public void flagFlaggedSquare() throws GameException {
 		square.flag();  //default: closed 
-		square.flag();  
-		assertTrue(square.isFlagged());  //square must be flagged
+		try {
+			square.flag();
+		} catch (GameException e) {
+			assertTrue(square.isFlagged());  //square must be flagged
+		}  
 	}
 }

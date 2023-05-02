@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import uo.mp.minesweeper.TestUtil;
 import uo.mp.minesweeper.game.Board;
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 
 public class GetStateTests {
@@ -67,9 +68,10 @@ public class GetStateTests {
 			{'1','1','1',' ',' '},
 			{' ',' ',' ',' ',' '},
 			{' ',' ',' ',' ',' '}
+	 * @throws GameException 
 	 */
 	@Test
-	public void getStateMiddleGameBoard() {
+	public void getStateMiddleGameBoard() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero con una mina y una bandera
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero

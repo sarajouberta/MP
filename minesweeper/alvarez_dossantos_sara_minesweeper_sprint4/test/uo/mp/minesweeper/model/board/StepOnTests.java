@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import uo.mp.minesweeper.TestUtil;
 import uo.mp.minesweeper.game.Board;
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 
 public class StepOnTests {
@@ -27,18 +28,21 @@ public class StepOnTests {
 	 * 1.
 	 * GIVEN Casilla ya descubierta
 	 * WHEN stepOn()
-	 * THEN no hace nada
+	 * THEN GameException y la casilla se mantiene abierta
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnOpenedSquare() {
+	public void stepOnOpenedSquare() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixTwoMines);
 		board = new Board(2, ts);  //tablero con dos minas y dos banderas
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		board.unveil();  //se destapa todo el tablero
-		board.stepOn(0, 0); //se intenta destapar una casilla ya destapada
-		Square[][] aux = board.getSquares();  //se obtiene el estado de todas las casillas del tablero
-		assertTrue(aux[0][0].isOpened());  //se comprueba que la posición establecida tiene bandera
-		
+		try {
+			board.stepOn(0, 0); //se intenta destapar una casilla ya destapada
+		} catch (GameException e) {
+			Square[][] aux = board.getSquares();  //se obtiene el estado de todas las casillas del tablero
+			assertTrue(aux[0][0].isOpened());  //se comprueba que la posición establecida sigue abierta
+		}
 	}
 	
 	/**
@@ -46,9 +50,10 @@ public class StepOnTests {
 	 * GIVEN Casilla con bandera con mina
 	 * WHEN stepOn()
 	 * THEN la casilla permanece cerrada con bandera
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnFlaggedMineSquare() {
+	public void stepOnFlaggedMineSquare() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
@@ -64,9 +69,10 @@ public class StepOnTests {
 	 * GIVEN Casilla con bandera sin mina
 	 * WHEN stepOn()
 	 * THEN destapa la casilla correctamente
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnFlaggedEmptySquare() {
+	public void stepOnFlaggedEmptySquare() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
@@ -81,9 +87,10 @@ public class StepOnTests {
 	 * GIVEN Casilla con mina
 	 * WHEN stepOn()
 	 * THEN destapa la casilla correctamente
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnMineSquare() {
+	public void stepOnMineSquare() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
@@ -98,9 +105,10 @@ public class StepOnTests {
 	 * GIVEN  Casilla con pista numérica
 	 * WHEN stepOn()
 	 * THEN destapa la casilla correctamente
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnSquareWithClue() {
+	public void stepOnSquareWithClue() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
@@ -115,9 +123,10 @@ public class StepOnTests {
 	 * GIVEN Casilla vacía
 	 * WHEN stepOn()
 	 * THEN destapa la casilla correctamente
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnEmptySquare() {
+	public void stepOnEmptySquare() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);  //tablero 1 mina y 1 bandera
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero

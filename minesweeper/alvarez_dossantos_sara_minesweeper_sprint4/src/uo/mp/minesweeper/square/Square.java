@@ -1,6 +1,7 @@
 package uo.mp.minesweeper.square;
 
 import uo.mp.minesweeper.game.square.actions.Action;
+import uo.mp.minesweeper.session.GameException;
 
 public class Square {
 	
@@ -36,23 +37,31 @@ public class Square {
 	
 	
 	/**
-	 * Pasa la casilla a estado OPENED si está CLOSED. En caso contrario (OPENED o FLAGGED) no hace
-	nada.
+	 * Pasa la casilla a estado OPENED si está CLOSED. En caso contrario (FLAGGED) no hace
+	 * nada.
+	 * Modificado sprint 4: tratamiento excepciones (no opened a opened)
+	 * @throws GameException 
 	 */
-	public void stepOn() {
+	public void stepOn() throws GameException {
 		if(state == SquareState.CLOSED) {
 			state = SquareState.OPENED;
 			action.execute();
+		}else if(state == SquareState.OPENED){
+			throw new GameException("Square already opened");
 		}
 	}
 	
 	/**
 	 * Si la casilla está cerrada (CLOSED), su estado pasa a FLAGGED. En caso contrario no hace nada.
+	 *  Modificado sprint 4: tratamiento excepciones
+	 * @throws GameException 
 	
 	 */
-	public void flag() {
+	public void flag() throws GameException {
 		if(state == SquareState.CLOSED) {
 			state = SquareState.FLAGGED;
+		}else if(state == SquareState.FLAGGED){
+			throw new GameException("Square already flagged");
 		}
 	}
 	
@@ -68,9 +77,15 @@ public class Square {
 	
 	/**
 	 * Pasa la casilla a estado OPENED incondicionalmente.
+	 * Modificado sprint 4: tratamiento excepciones
+	 * @throws GameException 
 	 */
-	public void open() {
-		state = SquareState.OPENED;
+	public void open() throws GameException {
+		if(state == SquareState.OPENED) {
+			throw new GameException("Square already opened");
+		}else {
+			state = SquareState.OPENED;
+		}
 	}
 	
 	/**

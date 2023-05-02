@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 
 public class UnflagTests {
@@ -29,9 +30,10 @@ public class UnflagTests {
 	 * GIVEN opened square
 	 * WHEN unflag()
 	 * THEN the square remains opened
+	 * @throws GameException 
 	 */
 	@Test
-	public void unflagOpenedSquare() {
+	public void unflagOpenedSquare() throws GameException {
 		square.open();
 		square.unflag();
 		assertTrue(square.isOpened());
@@ -54,9 +56,10 @@ public class UnflagTests {
 	 * GIVEN flagged square
 	 * WHEN unflag()
 	 * THEN the square changes to closed
+	 * @throws GameException 
 	 */
 	@Test
-	public void unflagFlaggedSquare() {
+	public void unflagFlaggedSquare() throws GameException {
 		square.flag();  //por defecto estaba closed: cambia a flagged
 		square.unflag();
 		assertFalse(square.isOpened());  //la casilla debe estar closed

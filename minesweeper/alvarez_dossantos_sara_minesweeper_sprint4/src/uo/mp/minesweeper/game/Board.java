@@ -9,6 +9,7 @@ import uo.mp.lab.util.check.ArgumentChecks;
 import uo.mp.minesweeper.game.square.actions.BlowUpAction;
 import uo.mp.minesweeper.game.square.actions.ClearAction;
 import uo.mp.minesweeper.game.square.actions.NullAction;
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 import uo.mp.minesweeper.square.SquareState;
 
@@ -33,6 +34,8 @@ public class Board {
 	 * 
 	 */
 	public Board(int height,int width, int percentage) {
+	//para tratar GameException por tamaño inválido: 
+	//try/catch el IllegalArgument a GameException¿?
 		ArgumentChecks.isTrue(height > 0, "Invalid height");
 		ArgumentChecks.isTrue(width > 0, "Invalid width");
 		ArgumentChecks.isTrue(percentage > 0 && percentage <= 100, "Invalid percentage");
@@ -139,8 +142,9 @@ public class Board {
 	 * Si no está descubierta, descubre la casilla de coordenadas (x, y).
 	 * @param x
 	 * @param y
+	 * @throws GameException 
 	 */
-	public void stepOn(int x, int y) {
+	public void stepOn(int x, int y) throws GameException {
 		ArgumentChecks.isTrue(x >= 0 && x < board.length, "Invalid x");
 		ArgumentChecks.isTrue(y >= 0 && y < board[0].length, "Invalid y");
 		board[x][y].stepOn();
@@ -150,7 +154,7 @@ public class Board {
 	 * Método para saber si se ha ganado la partida
 	 * @return
 	 */
-	public boolean winner() {
+	public boolean hasWon() {
 		int closedSquares = 0;  
 		//se recorre el tablero para saber el nº de casillas que quedan cerradas
 		for (int i = 0; i < board.length; i++) {
@@ -173,8 +177,9 @@ public class Board {
 	 * casilla de coordenadas (x, y).
 	 * @param x
 	 * @param y
+	 * @throws GameException 
 	 */
-	public void flag(int x, int y) {
+	public void flag(int x, int y) throws GameException {
 		ArgumentChecks.isTrue(x >= 0 && x < board.length, "Invalid x");
 		ArgumentChecks.isTrue(y >= 0 && y < board[0].length, "Invalid y");
 		if(!board[x][y].isOpened() && !board[x][y].isFlagged()) {
@@ -201,11 +206,15 @@ public class Board {
 	 * Descubre todas las casillas del tablero. Si una casilla está cerrada (CLOSED) pasa a
 	 * estado OPENED.
 	 */
-	public void unveil() {
+	public void unveil()  {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				if(!board[i][j].isOpened()) {
-					board[i][j].open();   //destapa todas las casillas cerradas del tablero
+				if(!board[i][j].isOpened()) {     //se supone que al comprobar esto no hay excepción¿?
+					try {
+						board[i][j].open();
+					} catch (GameException e) {
+						System.err.println(e.getMessage());
+					}
 				}
 			}
 		}
@@ -369,7 +378,12 @@ public class Board {
 			if(checkNotCorner(rdnI, rdnJ)){
 				if(board[rdnI][rdnJ].getValue() == 0) {  //si no es esquina y está vacía
 					squareFound = true;
-					this.stepOn(rdnI, rdnJ);
+					try {
+						this.stepOn(rdnI, rdnJ);  //al ser inicial NO debería saltar la excepción
+					} catch (GameException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}while(!squareFound);

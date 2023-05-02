@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import uo.mp.minesweeper.TestUtil;
 import uo.mp.minesweeper.game.Board;
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 import uo.mp.minesweeper.square.SquareState;
 
@@ -46,9 +47,10 @@ public class UnveilTests {
 	 * GIVEN tablero con casilla flagged
 	 * WHEN unveil()
 	 * THEN tablero con todas las casillas destapadas
+	 * @throws GameException 
 	 */
 	@Test
-	public void unveilOneFlag() {
+	public void unveilOneFlag() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixOneMine);
 		board = new Board(1, ts);
 		board.flag(1, 1); //se pone bandera sobre la mina
@@ -69,15 +71,22 @@ public class UnveilTests {
 	 * GIVEN tablero con casillas destapadas
 	 * WHEN unveil()
 	 * THEN tablero con todas las casillas destapadas
+	 * @throws GameException 
 	 */
 	@Test
-	public void unveilWithOpenedSquares() {
+	public void unveilWithOpenedSquares() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixBase);
 		board = new Board(0, ts);
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
 		
 		for (int i = 0; i < ts.length; i++) {
-			board.stepOn(i, i);  //se abre la diagonal del tablero
+			try {
+				board.stepOn(i, i);  //se abre la diagonal del tablero
+			} catch (GameException e) {
+				/*si había alguna casilla ya abierta salta esta excepción, pero
+				  solo tiene que tratarse cuando es el usuario quien llama a step on en una
+				  casilla concreta, no este método*/
+			}
 		}
 		Square[][] resultSquares = board.getSquares();  //se guarda el estado del tablero
 		board.unveil();

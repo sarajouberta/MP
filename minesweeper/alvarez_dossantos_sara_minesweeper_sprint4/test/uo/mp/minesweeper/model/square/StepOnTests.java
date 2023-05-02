@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import uo.mp.minesweeper.game.square.actions.ClearAction;
 import uo.mp.minesweeper.game.square.actions.NullAction;
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 import uo.mp.minesweeper.square.SquareState;
 
@@ -31,13 +32,17 @@ public class StepOnTests {
 	 * 1.
 	 * GIVEN opened square
 	 * WHEN stepOn()
-	 * THEN the square remains opened
+	 * THEN GameException and the square remains opened
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnOpenedSquare() {
+	public void stepOnOpenedSquare() throws GameException {
 		square.open();
-		square.stepOn();
-		assertTrue(square.isOpened());
+		try {
+			square.stepOn();
+		} catch (GameException e) {
+			assertTrue(square.isOpened());
+		}
 	}
 	
 	/**
@@ -45,9 +50,10 @@ public class StepOnTests {
 	 * GIVEN closed square
 	 * WHEN stepOn()
 	 * THEN the square changes to opened
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnClosedSquare() {
+	public void stepOnClosedSquare() throws GameException {
 		square.stepOn();
 		assertTrue(square.isOpened());
 	}
@@ -57,9 +63,10 @@ public class StepOnTests {
 	 * GIVEN flagged square
 	 * WHEN stepOn()
 	 * THEN the square remains flagged
+	 * @throws GameException 
 	 */
 	@Test
-	public void stepOnFlaggedSquare() {
+	public void stepOnFlaggedSquare() throws GameException {
 		square.flag();  //por defecto estaba closed: cambia a flagged
 		square.stepOn();
 		assertTrue(square.isFlagged());

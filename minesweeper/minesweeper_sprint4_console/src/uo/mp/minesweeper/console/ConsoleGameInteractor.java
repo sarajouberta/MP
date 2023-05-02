@@ -24,7 +24,7 @@ public class ConsoleGameInteractor implements GameInteractor{
 		char op;
 		//do-while para que muestre las opciones si el jugador marca una letra incorrecta
 		do {
-			op = (char) scan.next().charAt(0);	
+			op = scan.next().charAt(0);	
 		}while(op != 's' && op != 'f' && op != 'u');
 		
 		int x;

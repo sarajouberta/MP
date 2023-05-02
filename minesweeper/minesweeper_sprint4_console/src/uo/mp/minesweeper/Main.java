@@ -4,7 +4,7 @@ import uo.mp.minesweeper.console.ConsoleGameInteractor;
 import uo.mp.minesweeper.console.ConsoleSessionInteractor;
 import uo.mp.minesweeper.ranking.GameRanking;
 import uo.mp.minesweeper.session.GameSession;
-import uo.mp.minesweeper.util.log.BasicSimpleLogger;
+import uo.mp.lab.util.log.BasicSimpleLogger;
 
 public class Main {
 

@@ -2,6 +2,7 @@ package uo.mp.minesweeper.game.square.actions;
 
 import java.util.List;
 
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 
 public class ClearAction implements Action{
@@ -24,11 +25,15 @@ public class ClearAction implements Action{
 	
 	/**
 	 * Cuando se ejecuta, se llama al método stepOn de las casillas vecinas
+	 * @throws GameException 
 	 */
 	@Override
-	public void execute() {
+	public void execute() throws GameException {
 		for(Square neighbour : neighbours) {
-			neighbour.stepOn();
+			if(!neighbour.isOpened()) {
+				neighbour.stepOn();	
+			}
+			
 		}
 	}
 

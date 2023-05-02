@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import uo.mp.minesweeper.TestUtil;
 import uo.mp.minesweeper.game.Board;
+import uo.mp.minesweeper.session.GameException;
 import uo.mp.minesweeper.square.Square;
 
 public class ExecuteClearActionTest {
@@ -26,10 +27,11 @@ public class ExecuteClearActionTest {
 	 * GIVEN stepOn sobre casilla con mina (casilla con blowUp action asociada)
 	 * WHEN execute()
 	 * THEN casilla destapada y tablero ha explotado (fin partida)
+	 * @throws GameException 
 	 * 
 	 */
 	@Test
-	public void executeClearUoSquare() {
+	public void executeClearUoSquare() throws GameException {
 		Square[][] ts = TestUtil.getBoardByMatrix(TestUtil.baseMatrixTwoMines);
 		board = new Board(2, ts);  //tablero con dos minas
 		TestUtil.setBoardActions(board); //se establece las acciones asociadas al tablero
